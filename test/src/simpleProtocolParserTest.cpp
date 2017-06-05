@@ -1,6 +1,6 @@
-#include <simpleProtocolParser.h>
-#include "CppUTest/TestHarness.h"
-#include <string>
+#include "gtest/gtest.h"
+#include "simpleProtocolParser.h"
+using namespace testing;
 
 class SimpleProtocolParserStub : public SimpleProtocolParser
 {
@@ -39,38 +39,39 @@ class SimpleProtocolParserStub : public SimpleProtocolParser
 		}
 };
 
-TEST_GROUP(SimpleProtocolParserGroup)
+class SimpleProtocolParserGroup : public Test
 {
-	SimpleProtocolParserStub parser;
+	public:
+		SimpleProtocolParserStub parser;
 };
 
-TEST(SimpleProtocolParserGroup, ChangeStateToWaitForCommandOnStartChar)
+TEST_F(SimpleProtocolParserGroup, ChangeStateToWaitForCommandOnStartChar)
 {
 	parser.receiveChar('<');
 
-	STRCMP_EQUAL("W", parser.getTrace().c_str());
+	ASSERT_STREQ("W", parser.getTrace().c_str());
 }
 
-TEST(SimpleProtocolParserGroup, StayInWaitForCommandWaitingThreeCommandChar)
+TEST_F(SimpleProtocolParserGroup, StayInWaitForCommandWaitingThreeCommandChar)
 {
-	parser.receiveChar('<');
-	parser.receiveChar('a');
+    parser.receiveChar('<');
+    parser.receiveChar('a');
 
-	STRCMP_EQUAL("WC", parser.getTrace().c_str());
+    ASSERT_STREQ("WC", parser.getTrace().c_str());
 }
 
-TEST(SimpleProtocolParserGroup, ChangeStateToWaitingForDataAfterThreeCommandChar)
+TEST_F(SimpleProtocolParserGroup, ChangeStateToWaitingForDataAfterThreeCommandChar)
 {
-	parser.receiveChar('<');
-	parser.receiveChar('a');
-	parser.receiveChar('a');
-	parser.receiveChar('a');
-	parser.receiveChar('a');
+    parser.receiveChar('<');
+    parser.receiveChar('a');
+    parser.receiveChar('a');
+    parser.receiveChar('a');
+    parser.receiveChar('a');
 
-	STRCMP_EQUAL("WCCCD", parser.getTrace().c_str());
+    ASSERT_STREQ("WCCCD", parser.getTrace().c_str());
 }
 
-TEST(SimpleProtocolParserGroup, CallExecuteCommandOnEndChar)
+TEST_F(SimpleProtocolParserGroup, CallExecuteCommandOnEndChar)
 {
 	parser.receiveChar('<');
 	parser.receiveChar('a');
@@ -79,5 +80,5 @@ TEST(SimpleProtocolParserGroup, CallExecuteCommandOnEndChar)
 	parser.receiveChar('a');
 	parser.receiveChar('>');
 
-	STRCMP_EQUAL("WCCCDE", parser.getTrace().c_str());
+    ASSERT_STREQ("WCCCDE", parser.getTrace().c_str());
 }
