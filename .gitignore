@@ -2,6 +2,7 @@
 /Release/
 /TestWin/
 /.idea/*
+/test/.idea/*
 
 .metadata
 bin/
