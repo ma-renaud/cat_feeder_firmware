@@ -1,14 +1,8 @@
-/*
- * WaitForCommandStart.h
- *
- *  Created on: 2016-03-29
- *      Author: Marco
- */
-
 #ifndef INCLUDE_WAITFORCOMMANDSTART_H_
 #define INCLUDE_WAITFORCOMMANDSTART_H_
 
 #include "processorState.h"
+#include <cstdint>
 
 class SimpleProtocolParser;
 
@@ -26,11 +20,14 @@ class WaitForCommand: public ProcessorState
 {
 	private:
 		SimpleProtocolParser* _context;
+        uint8_t cpt;
 
 	public:
 		WaitForCommand(SimpleProtocolParser* context)
 		{
 			_context = context;
+            cpt = 0;
+
 		}
 		void receiveChar(char received);
 };

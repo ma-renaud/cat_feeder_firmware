@@ -45,10 +45,11 @@ message(STATUS "source_dir='${source_dir}'")
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES "../src/simpleProtocolParser.cpp"
-                 "../src/waitForCommandStart.cpp"
-                 "src/simpleProtocolParserTest.cpp"
-                 "src/main.cpp")
+set(SOURCE_FILES )
+
+file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
+                               "../src/waitForCommandStart.cpp"
+                               "src/*.cpp")
 
 add_executable(TestingWithGTest ${SOURCE_FILES})
 target_link_libraries(TestingWithGTest libgtest libgmock)

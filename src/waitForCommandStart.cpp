@@ -15,7 +15,6 @@ void WaitForCommandStart::receiveChar(char received)
 void WaitForCommand::receiveChar(char received)
 {
 	UNUSED(received);
-	static uint8_t cpt = 0;
 	cpt++;
 	_context->saveCommand();
 	if(cpt >= 3)
