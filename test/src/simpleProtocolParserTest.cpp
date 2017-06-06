@@ -5,38 +5,16 @@ using namespace testing;
 class SimpleProtocolParserStub : public SimpleProtocolParser
 {
 	public:
-		SimpleProtocolParserStub()
-		{
-			trace = "";
-		}
-
-		std::string getTrace()
-		{
-			return trace;
-		}
+		SimpleProtocolParserStub() { trace = ""; }
+		std::string getTrace() { return trace; }
 
 	private:
 		std::string trace;
 
-		virtual void waitForCommand()
-		{
-			trace += "W";
-		}
-
-		virtual void saveCommand()
-		{
-			trace += "C";
-		}
-
-		virtual void saveData()
-		{
-			trace += "D";
-		}
-
-		virtual void executeCommand()
-		{
-			trace += "E";
-		}
+		virtual void waitForCommand(){ trace += "W"; }
+		virtual void saveCommand() { trace += "C"; }
+		virtual void saveData() { trace += "D";	}
+		virtual void executeCommand() {	trace += "E"; }
 };
 
 class SimpleProtocolParserGroup : public Test
