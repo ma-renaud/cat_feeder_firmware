@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include "simpleProtocolParser.h"
 
 using namespace testing;
@@ -28,7 +28,7 @@ TEST_F(SimpleProtocolParserGroup, ChangeStateToWaitForCommandOnStartChar)
 {
    parser.receiveChar('<');
 
-   ASSERT_STREQ("W", parser.getTrace().c_str());
+   ASSERT_THAT(parser.getTrace().c_str(), StrEq("W"));
 }
 
 TEST_F(SimpleProtocolParserGroup, StayInWaitForCommandWaitingThreeCommandChar)
@@ -36,7 +36,7 @@ TEST_F(SimpleProtocolParserGroup, StayInWaitForCommandWaitingThreeCommandChar)
    parser.receiveChar('<');
    parser.receiveChar('a');
 
-   ASSERT_STREQ("WC", parser.getTrace().c_str());
+   ASSERT_THAT(parser.getTrace().c_str(), StrEq("WC"));
 }
 
 TEST_F(SimpleProtocolParserGroup, ChangeStateToWaitingForDataAfterThreeCommandChar)
@@ -47,7 +47,7 @@ TEST_F(SimpleProtocolParserGroup, ChangeStateToWaitingForDataAfterThreeCommandCh
    parser.receiveChar('a');
    parser.receiveChar('a');
 
-   ASSERT_STREQ("WCCCD", parser.getTrace().c_str());
+   ASSERT_THAT(parser.getTrace().c_str(), StrEq("WCCCD"));
 }
 
 TEST_F(SimpleProtocolParserGroup, CallExecuteCommandOnEndChar)
@@ -59,5 +59,5 @@ TEST_F(SimpleProtocolParserGroup, CallExecuteCommandOnEndChar)
    parser.receiveChar('a');
    parser.receiveChar('>');
 
-   ASSERT_STREQ("WCCCDE", parser.getTrace().c_str());
+   ASSERT_THAT(parser.getTrace().c_str(), StrEq("WCCCDE"));
 }
