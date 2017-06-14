@@ -1,4 +1,5 @@
 #include "gmock/gmock.h"
+#include <array>
 
 typedef uint32_t volatile device_register;
 
@@ -32,21 +33,50 @@ class GPIO
       {
          ODR ^= static_cast<uint16_t>(pin);
       }
-   private:
+
+   protected:
       device_register MODER;
       device_register OTYPER;
+      device_register OSPEEDR;
+      device_register PUPDR;
+      device_register IDR;
       device_register ODR;
+      device_register BSRR;
+      device_register LCKR;
+      device_register AFR[2];
+      device_register BRR;
+};
+
+class GPIOExposed : public GPIO{
+   public:
+      uint32_t odr() const {return ODR;}
 };
 
 class GpioGroup : public Test
 {
+   public:
+      static constexpr int GPIOREGISTERSSIZE = 44;
+      std::array<uint32_t, GPIOREGISTERSSIZE> gpioRegisters;
+      GPIOExposed* gpio = reinterpret_cast<GPIOExposed*>(gpioRegisters.data());
 
+      void SetUp() override
+      {
+         gpioRegisters.fill(0);
+      }
+
+      void TearDown() override {}
 };
 
-TEST_F(GpioGroup, FirstGpioTest)
+TEST_F(GpioGroup, TestInstanceSize)
 {
-   int expected = 12;
    GPIO instance;
-   instance.toggle(Pins::PIN_2);
-   ASSERT_THAT(sizeof(instance), Eq(expected));
+   ASSERT_THAT(sizeof(instance), Eq(GPIOREGISTERSSIZE));
+}
+
+TEST_F(GpioGroup, TestToggle)
+{
+   Pins selectedPin = Pins::PIN_5;
+   gpio->toggle(selectedPin);
+
+   ASSERT_THAT(gpio->odr(), static_cast<uint32_t>(selectedPin));
 }
