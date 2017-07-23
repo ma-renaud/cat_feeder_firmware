@@ -47,6 +47,7 @@ set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
                                "../src/waitForCommandStart.cpp"
+                               "../src/f0GpioMemory.cpp"
                                "src/*.cpp")
 
 add_executable(TestingWithGTest ${SOURCE_FILES})
