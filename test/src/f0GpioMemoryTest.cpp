@@ -8,7 +8,7 @@ class GPIOExposed : public F0GpioMemory{
       uint32_t odr() const {return ODR;}
 };
 
-class GpioGroup : public Test
+class GpioMemoryGroup : public Test
 {
    public:
       static constexpr int GPIOREGISTERSSIZE = 44;
@@ -23,13 +23,13 @@ class GpioGroup : public Test
       void TearDown() override {}
 };
 
-TEST_F(GpioGroup, TestInstanceSize)
+TEST_F(GpioMemoryGroup, TestInstanceSize)
 {
    F0GpioMemory instance;
    ASSERT_THAT(sizeof(instance), Eq(GPIOREGISTERSSIZE));
 }
 
-TEST_F(GpioGroup, TestToggle)
+TEST_F(GpioMemoryGroup, TestToggle)
 {
    Pins selectedPin = Pins::PIN_5;
    gpio->toggle(selectedPin);
