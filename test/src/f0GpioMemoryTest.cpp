@@ -11,7 +11,7 @@ class GPIOExposed : public F0GpioMemory{
 class GpioMemoryGroup : public Test
 {
    public:
-      static constexpr int GPIOREGISTERSSIZE = 44;
+      static constexpr unsigned int GPIOREGISTERSSIZE = 44;
       std::array<uint32_t, GPIOREGISTERSSIZE> gpioRegisters;
       GPIOExposed* gpio = reinterpret_cast<GPIOExposed*>(gpioRegisters.data());
 
@@ -34,5 +34,5 @@ TEST_F(GpioMemoryGroup, TestToggle)
    Pins selectedPin = Pins::PIN_5;
    gpio->toggle(selectedPin);
 
-   ASSERT_THAT(gpio->odr(), static_cast<uint32_t>(selectedPin));
+   ASSERT_THAT(gpio->odr(), Eq(static_cast<uint32_t>(selectedPin)));
 }
