@@ -9,14 +9,14 @@ TIM_HandleTypeDef htim17;
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
-static void Error_Handler(void);
-static void MX_GPIO_Init(void);
-static void MX_TIM14_Init(void);
-static void MX_TIM16_Init(void);
-static void MX_TIM17_Init(void);
+void SystemClock_Config();
+static void Error_Handler();
+static void MX_GPIO_Init();
+static void MX_TIM14_Init();
+static void MX_TIM16_Init();
+static void MX_TIM17_Init();
 
-int main(void)
+int main()
 {
    /* MCU Configuration----------------------------------------------------------*/
 
@@ -59,7 +59,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 /** System Clock Configuration
 */
-void SystemClock_Config(void)
+void SystemClock_Config()
 {
    RCC_OscInitTypeDef RCC_OscInitStruct;
    RCC_ClkInitTypeDef RCC_ClkInitStruct;
@@ -91,7 +91,7 @@ void SystemClock_Config(void)
    HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 } /*--------------------------------------------------------------------------*/
 
-void MX_TIM14_Init(void)
+void MX_TIM14_Init()
 {
    htim14.Instance = TIM14;
    htim14.Init.Prescaler = 23999;
@@ -105,7 +105,7 @@ void MX_TIM14_Init(void)
    HAL_NVIC_EnableIRQ(TIM14_IRQn);
 } /*--------------------------------------------------------------------------*/
 
-void MX_TIM16_Init(void)
+void MX_TIM16_Init()
 {
 
    TIM_OC_InitTypeDef sConfigOC;
@@ -125,7 +125,7 @@ void MX_TIM16_Init(void)
    HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1);
 }
 
-void MX_TIM17_Init(void)
+void MX_TIM17_Init()
 {
 
    TIM_OC_InitTypeDef sConfigOC;
@@ -144,7 +144,7 @@ void MX_TIM17_Init(void)
    HAL_TIM_PWM_ConfigChannel(&htim17, &sConfigOC, TIM_CHANNEL_1);
 }
 
-void MX_GPIO_Init(void)
+void MX_GPIO_Init()
 {
    GPIO_InitTypeDef GPIO_InitStruct;
 
@@ -168,7 +168,7 @@ void MX_GPIO_Init(void)
   * @param  None
   * @retval None
   */
-static void Error_Handler(void)
+static void Error_Handler()
 {
    __asm__("BKPT");
    while (1) { }
