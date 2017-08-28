@@ -4,11 +4,15 @@
 
 using namespace testing;
 
-class F0Gpio
+class F0Gpio : public IGpio
 {
    public:
       F0Gpio() = default;
       ~F0Gpio() = default;
+
+      uint8_t readPin(GPIO_Pin pin) override {return 0;}
+      void writePin(GPIO_Pin pin, uint8_t PinState) override {}
+      void togglePin(GPIO_Pin pin) override {gpio_memory->toggle(pin);}
 
    private:
       std::unique_ptr<F0GpioMemory> gpio_memory = std::make_unique<F0GpioMemory>();
