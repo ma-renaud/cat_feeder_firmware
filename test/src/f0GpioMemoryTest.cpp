@@ -31,8 +31,16 @@ TEST_F(GpioMemoryGroup, TestInstanceSize)
 
 TEST_F(GpioMemoryGroup, TestToggle)
 {
-   Pins selectedPin = Pins::PIN_5;
+  GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
    gpio->toggle(selectedPin);
 
    ASSERT_THAT(gpio->odr(), Eq(static_cast<uint32_t>(selectedPin)));
+}
+
+TEST_F(GpioMemoryGroup, TestWrite)
+{
+  GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
+  gpio->write(selectedPin);
+
+  ASSERT_THAT(gpio->odr(), Eq(static_cast<uint32_t>(selectedPin)));
 }
