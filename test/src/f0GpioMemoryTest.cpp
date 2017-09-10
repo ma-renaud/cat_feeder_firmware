@@ -6,6 +6,18 @@ using namespace testing;
 class GPIOExposed : public F0GpioMemory{
    public:
       uint32_t odr() const {return ODR;}
+      uint32_t idr() const {return IDR;}
+
+      void updateRegisters(){
+        ODR = ODR & ~(BRR);
+        ODR = ODR & ~(BSRR >> 16) | (BSRR & 0xFFFF);
+        BRR = 0;
+        BSRR = 0;
+      }
+
+      void setPin(GPIO_Pin pin) {
+        IDR = IDR | (static_cast<uint32_t>(pin) & 0xFFFF);
+      }
 };
 
 class GpioMemoryGroup : public Test
@@ -37,10 +49,30 @@ TEST_F(GpioMemoryGroup, TestToggle)
    ASSERT_THAT(gpio->odr(), Eq(static_cast<uint32_t>(selectedPin)));
 }
 
-TEST_F(GpioMemoryGroup, TestWrite)
+TEST_F(GpioMemoryGroup, TestWriteToOne)
 {
   GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
-  gpio->write(selectedPin);
+  gpio->write(selectedPin, GPIO_PinState::GPIO_PIN_SET);
+  gpio->updateRegisters();
 
   ASSERT_THAT(gpio->odr(), Eq(static_cast<uint32_t>(selectedPin)));
+}
+
+TEST_F(GpioMemoryGroup, TestWriteToZero)
+{
+  GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
+  gpio->write(selectedPin, GPIO_PinState::GPIO_PIN_SET);
+  gpio->updateRegisters();
+  gpio->write(selectedPin, GPIO_PinState::GPIO_PIN_RESET);
+  gpio->updateRegisters();
+
+  ASSERT_THAT(gpio->odr(), Eq(0));
+}
+
+TEST_F(GpioMemoryGroup, TestRead)
+{
+  GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
+  gpio->setPin(selectedPin);
+
+  ASSERT_THAT(gpio->idr(), Eq(static_cast<uint32_t>(selectedPin)));
 }

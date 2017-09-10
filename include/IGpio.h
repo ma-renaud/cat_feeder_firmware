@@ -22,12 +22,18 @@ enum class GPIO_Pin : uint16_t
   PIN_All = 0xFFFF
 };
 
+enum class GPIO_PinState : uint8_t
+{
+  GPIO_PIN_RESET = 0,
+  GPIO_PIN_SET
+};
+
 class IGpio
 {
 public:
-  virtual uint8_t   readPin(GPIO_Pin pin) = 0;
-  virtual void      writePin(GPIO_Pin pin, uint8_t PinState) = 0;
-  virtual void      togglePin(GPIO_Pin pin) = 0;
+  virtual GPIO_PinState   readPin(GPIO_Pin pin) = 0;
+  virtual void            writePin(GPIO_Pin pin, GPIO_PinState PinState) = 0;
+  virtual void            togglePin(GPIO_Pin pin) = 0;
 };
 
 #endif //CAT_FEEDER_IGPIO_H

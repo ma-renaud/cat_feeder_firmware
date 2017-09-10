@@ -10,8 +10,9 @@ class F0GpioMemory {
 public:
   F0GpioMemory() = default;
   ~F0GpioMemory() = default;
+  GPIO_PinState readPin(GPIO_Pin pin);
+  void write(GPIO_Pin pin, GPIO_PinState PinState);
   void toggle(GPIO_Pin pin);
-  void write(GPIO_Pin pin, uint8_t PinState);
 
 protected:
   device_register MODER;
