@@ -7,7 +7,7 @@ set(TARGET_MBED_GCC_TOOLCHAIN_INCLUDED 1)
 
 SET(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR cortex-m0)
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "C:/Program Files (x86)/GNU Tools ARM Embedded/5.2 2015q4")
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/opt/gcc-arm-none-eabi-6-2017-q2-update")
 
 find_program(ARM_NONE_EABI_GCC arm-none-eabi-gcc)
 find_program(ARM_NONE_EABI_GPP arm-none-eabi-g++)
@@ -54,7 +54,7 @@ set(CMAKE_C_COMPILER ${ARM_NONE_EABI_GCC})
 set(CMAKE_CXX_COMPILER ${ARM_NONE_EABI_GPP})
 SET(CMAKE_ASM_COMPILER ${ARM_NONE_EABI_GCC})
 
-SET(COMMON_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-move-loop-invariants -Wall -Wextra -DOS_USE_TRACE_SEMIHOSTING_DEBUG")
+SET(COMMON_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -fno-move-loop-invariants -fno-stack-protector -Wall -Wextra -DOS_USE_TRACE_SEMIHOSTING_DEBUG")
 
 SET(CMAKE_C_FLAGS_DEBUG "${COMMON_FLAGS} -Og -g3 -std=gnu99 -ffreestanding -DDEBUG -DTRACE" CACHE INTERNAL "c compiler flags debug")
 SET(CMAKE_CXX_FLAGS_DEBUG "${COMMON_FLAGS} -Og -g3 -std=gnu++11 -fno-exceptions -fno-rtti -fno-use-cxa-atexit -fno-threadsafe-statics -DDEBUG -DTRACE" CACHE INTERNAL "cxx compiler flags debug")
