@@ -10,8 +10,8 @@ class F0Gpio : public IGpio
       F0Gpio() = default;
       ~F0Gpio() = default;
 
-      uint8_t readPin(GPIO_Pin pin) override {return 0;}
-      void writePin(GPIO_Pin pin, uint8_t PinState) override {}
+      GPIO_PinState readPin(GPIO_Pin pin) override {gpio_memory->readPin(pin);}
+      void writePin(GPIO_Pin pin, GPIO_PinState PinState) override {}
       void togglePin(GPIO_Pin pin) override {gpio_memory->toggle(pin);}
 
    private:
