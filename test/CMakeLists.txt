@@ -46,13 +46,20 @@ message(STATUS "source_dir='${source_dir}'")
 
 set(CMAKE_CXX_STANDARD 14)
 
+file(GLOB INCLUDE_FILES "../include/*.h")
+
+include_directories("include")
+include_directories("system/include")
+include_directories("system/include/cmsis")
+include_directories("system/include/stm32f0xx")
+
 file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
-        "../src/waitForCommandStart.cpp"
-        "../src/f0GpioMemory.cpp"
-        "src/*.cpp")
+                               "../src/waitForCommandStart.cpp"
+                               "../src/f0GpioMemory.cpp"
+                               "src/*.cpp")
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(TestingWithGTest ${SOURCE_FILES})
+add_executable(TestingWithGTest ${SOURCE_FILES} ${INCLUDE_FILES})
 target_link_libraries(TestingWithGTest Threads::Threads libgtest libgmock)

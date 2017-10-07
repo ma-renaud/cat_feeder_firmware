@@ -5,6 +5,16 @@ cmake_minimum_required(VERSION 3.5.0)
 
 add_definitions(-DSTM32F042x6)
 
+file(GLOB INCLUDE_SOURCES "include/*.h"
+                          "system/include/*.h"
+                          "system/include/cmsis/*.h"
+                          "system/include/stm32f0xx/*.h")
+
+include_directories("include")
+include_directories("system/include")
+include_directories("system/include/cmsis")
+include_directories("system/include/stm32f0xx")
+
 file(GLOB_RECURSE USER_SOURCES "src/*.c"
                                "src/*.cpp"
                                "system/src/cortexm/*.c"
@@ -23,12 +33,7 @@ file(GLOB LINKER_SCRIPT "${CMAKE_SOURCE_DIR}/ldscripts/mem.ld"
 
 addLinkerScripts("${LINKER_SCRIPT}")
 
-include_directories("include")
-include_directories("system/include")
-include_directories("system/include/cmsis")
-include_directories("system/include/stm32f0xx")
-
-add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${HAL_SOURCES} ${LINKER_SCRIPT})
+add_executable(${PROJECT_NAME}.elf ${USER_SOURCES} ${HAL_SOURCES} ${LINKER_SCRIPT} ${INCLUDE_SOURCES})
 
 set(HEX_FILE ${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_NAME}.bin)
