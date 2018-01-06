@@ -2,11 +2,13 @@
 
 ## History
 
-- [x] PWM management.
-- [ ] Encapsulate peripheral.
+- [x] PWM management
+- [ ] Encapsulate peripheral
 - [ ] Uart communication
-- [ ] Motor logic
 - [ ] Feed schedule
+
+## Cmake parameters
+-DCMAKE_TOOLCHAIN_FILE=STM32F042x6.cmake -DCMAKE_PREFIX_PATH=[path to arm-none-eabi bin folder]
 
 ## License
 
