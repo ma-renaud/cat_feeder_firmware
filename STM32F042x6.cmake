@@ -7,7 +7,6 @@ set(TARGET_MBED_GCC_TOOLCHAIN_INCLUDED 1)
 
 SET(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR cortex-m0)
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} "~/opt/gcc-arm-none-eabi-6-2017-q2-update")
 
 find_program(ARM_NONE_EABI_GCC arm-none-eabi-gcc)
 find_program(ARM_NONE_EABI_GPP arm-none-eabi-g++)

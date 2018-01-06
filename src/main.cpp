@@ -43,10 +43,6 @@ int main()
    htim16.Instance->CCR1 = 25;
    htim17.Instance->CCR1 = 25;
 
-#ifdef DEBUG
-   trace_printf("System clock: %u Hz\n", SystemCoreClock);
-#endif
-
    while (1) { }
 
 } /*--------------------------------------------------------------------------*/
@@ -54,7 +50,7 @@ int main()
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
    if (htim->Instance == TIM14)
-      HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_3);
+      HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
 } /*--------------------------------------------------------------------------*/
 
 /** System Clock Configuration
