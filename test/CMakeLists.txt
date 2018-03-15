@@ -58,6 +58,8 @@ file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
                                "../src/f0GpioMemory.cpp"
                                "src/*.cpp")
 
+include_directories("../include")
+
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 

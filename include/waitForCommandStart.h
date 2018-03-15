@@ -6,39 +6,23 @@
 
 class SimpleProtocolParser;
 
-class WaitForCommandStart: public ProcessorState
+class WaitForStart: public ProcessorState
 {
 	private:
 		SimpleProtocolParser* _context;
 
 	public:
-		WaitForCommandStart(SimpleProtocolParser* context): _context(context) {}
+		WaitForStart(SimpleProtocolParser* context): _context(context) {}
 		void receiveChar(char received);
 };
 
-class WaitForCommand: public ProcessorState
-{
-	private:
-		SimpleProtocolParser* _context;
-        uint8_t cpt;
-
-	public:
-		WaitForCommand(SimpleProtocolParser* context)
-		{
-			_context = context;
-            cpt = 0;
-
-		}
-		void receiveChar(char received);
-};
-
-class WaitForData: public ProcessorState
+class ReceiveData: public ProcessorState
 {
 	private:
 		SimpleProtocolParser* _context;
 
 	public:
-		WaitForData(SimpleProtocolParser* context)
+  		ReceiveData(SimpleProtocolParser* context)
 		{
 			_context = context;
 		}

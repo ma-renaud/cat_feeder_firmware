@@ -3,7 +3,7 @@
 
 SimpleProtocolParser::SimpleProtocolParser()
 {
-	pState = std::make_shared<WaitForCommandStart>(this);
+	pState = std::make_shared<WaitForStart>(this);
 }
 
 void SimpleProtocolParser::receiveChar(char received)
