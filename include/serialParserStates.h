@@ -1,5 +1,5 @@
-#ifndef INCLUDE_WAITFORCOMMANDSTART_H_
-#define INCLUDE_WAITFORCOMMANDSTART_H_
+#ifndef INCLUDE_SERIALPARSERSTATES_H_
+#define INCLUDE_SERIALPARSERSTATES_H_
 
 #include "processorState.h"
 #include <cstdint>
@@ -31,4 +31,4 @@ class ReceiveData: public ProcessorState
 
 
 
-#endif /* INCLUDE_WAITFORCOMMANDSTART_H_ */
+#endif /* INCLUDE_SERIALPARSERSTATES_H_ */

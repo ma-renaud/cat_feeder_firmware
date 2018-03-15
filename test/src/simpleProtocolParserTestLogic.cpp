@@ -18,7 +18,7 @@ class SimpleProtocolParserStub : public SimpleProtocolParser
       void receptionCompleted() override { trace += "E"; }
 };
 
-class SimpleProtocolParserGroup : public Test
+class SimpleProtocolParserLogicGroup : public Test
 {
    public:
       SimpleProtocolParserStub parser;

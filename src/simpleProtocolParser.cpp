@@ -1,5 +1,5 @@
 #include <simpleProtocolParser.h>
-#include "waitForCommandStart.h"
+#include "serialParserStates.h"
 
 SimpleProtocolParser::SimpleProtocolParser()
 {

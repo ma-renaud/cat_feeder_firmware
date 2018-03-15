@@ -1,4 +1,4 @@
-#include "waitForCommandStart.h"
+#include "serialParserStates.h"
 #include "simpleProtocolParser.h"
 
 void WaitForStart::receiveChar(char received)

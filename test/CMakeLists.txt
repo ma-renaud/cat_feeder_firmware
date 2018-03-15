@@ -54,7 +54,8 @@ include_directories("system/include/cmsis")
 include_directories("system/include/stm32f0xx")
 
 file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
-                               "../src/waitForCommandStart.cpp"
+                               "../src/serialParser.cpp"
+                               "../src/serialParserStates.cpp"
                                "../src/f0GpioMemory.cpp"
                                "src/*.cpp")
 

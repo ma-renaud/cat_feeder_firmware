@@ -9,9 +9,21 @@ class SimpleProtocolParserGroup : public Test
   SerialParser parser;
 };
 
-TEST_F(SimpleProtocolParserGroup, test_start_char_state_change)
+
+TEST_F(SimpleProtocolParserGroup, test_receive_three_data)
 {
   parser.receiveChar('<');
+  parser.receiveChar('a');
+  parser.receiveChar('a');
+  parser.receiveChar('a');
+  parser.receiveChar('a');
+  parser.receiveChar('a');
+  parser.receiveChar(':');
+  parser.receiveChar('a');
+  parser.receiveChar('a');
+  parser.receiveChar(':');
+  parser.receiveChar('a');
+  parser.receiveChar('>');
 
-  ASSERT_THAT(parser.getTrace().c_str(), StrEq("S"));
+  ASSERT_THAT(parser.getDecoded(), ElementsAre("aaaaa", "aa", "a"));
 }

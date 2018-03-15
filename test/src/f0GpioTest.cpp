@@ -34,8 +34,8 @@ class GpioGroup : public Test
       }
 };
 
-TEST_F(GpioGroup, TestTest)
+/*TEST_F(GpioGroup, TestTest)
 {
    FAIL();
-}
+}*/
 
