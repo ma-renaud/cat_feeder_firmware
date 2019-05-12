@@ -1,10 +1,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx_hal.h"
 #include "diag/Trace.h"
+#include <string>
 
 TIM_HandleTypeDef htim14;
 TIM_HandleTypeDef htim16;
 TIM_HandleTypeDef htim17;
+UART_HandleTypeDef huart_bluetooth;
+UART_HandleTypeDef huart_usb;
+UART_HandleTypeDef* huart;
+
 
 /* Private variables ---------------------------------------------------------*/
 
@@ -15,159 +20,227 @@ static void MX_GPIO_Init();
 static void MX_TIM14_Init();
 static void MX_TIM16_Init();
 static void MX_TIM17_Init();
+static void MX_USART1_UART_Init();
+static void MX_USART2_UART_Init();
 
-int main()
-{
-   /* MCU Configuration----------------------------------------------------------*/
+int main() {
+  /* MCU Configuration----------------------------------------------------------*/
 
-   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-   HAL_Init();
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  HAL_Init();
 
-   /* Configure the system clock */
-   SystemClock_Config();
+  /* Configure the system clock */
+  SystemClock_Config();
 
-   /* Initialize all configured peripherals */
-   MX_GPIO_Init();
-   MX_TIM14_Init();
-   MX_TIM16_Init();
-   MX_TIM17_Init();
+  /* Initialize all configured peripherals */
+  MX_GPIO_Init();
+  MX_TIM14_Init();
+  MX_TIM16_Init();
+  MX_TIM17_Init();
+  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
 
-   if (HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1) != HAL_OK) {
-      Error_Handler();
-   }
+  huart = &huart_usb;
 
-   if (HAL_TIM_PWM_Start(&htim17, TIM_CHANNEL_1) != HAL_OK) {
-      Error_Handler();
-   }
+  if (HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1) != HAL_OK) {
+    Error_Handler();
+  }
 
-   htim16.Instance->CCR1 = 25;
-   htim17.Instance->CCR1 = 25;
+  if (HAL_TIM_PWM_Start(&htim17, TIM_CHANNEL_1) != HAL_OK) {
+    Error_Handler();
+  }
 
-   while (1) { }
+  htim16.Instance->CCR1 = 25;
+  htim17.Instance->CCR1 = 25;
+
+  while (true) {}
 
 } /*--------------------------------------------------------------------------*/
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-   if (htim->Instance == TIM14)
-      HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+  std::string msg = "boom\r\n";
+  if (htim->Instance == TIM14) {
+    HAL_GPIO_TogglePin(LD3_GPIO_Port, LD3_Pin);
+    HAL_UART_Transmit(huart, reinterpret_cast<uint8_t*>(&msg[0]), static_cast<uint16_t>(msg.length()), HAL_MAX_DELAY);
+  }
 } /*--------------------------------------------------------------------------*/
 
 /** System Clock Configuration
 */
-void SystemClock_Config()
-{
-   RCC_OscInitTypeDef RCC_OscInitStruct;
-   RCC_ClkInitTypeDef RCC_ClkInitStruct;
-   RCC_PeriphCLKInitTypeDef PeriphClkInit;
+void SystemClock_Config() {
+  RCC_OscInitTypeDef RCC_OscInitStruct;
+  RCC_ClkInitTypeDef RCC_ClkInitStruct;
+  RCC_PeriphCLKInitTypeDef PeriphClkInit;
 
-   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI14 | RCC_OSCILLATORTYPE_HSI48;
-   RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
-   RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
-   RCC_OscInitStruct.HSI14CalibrationValue = 16;
-   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-   HAL_RCC_OscConfig(&RCC_OscInitStruct);
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI14 | RCC_OSCILLATORTYPE_HSI48;
+  RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
+  RCC_OscInitStruct.HSI14State = RCC_HSI14_ON;
+  RCC_OscInitStruct.HSI14CalibrationValue = 16;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-                                 | RCC_CLOCKTYPE_PCLK1;
-   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI48;
-   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+      | RCC_CLOCKTYPE_PCLK1;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI48;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1);
 
-   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
-   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_SYSCLK;
-   HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2C1;
+  PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_SYSCLK;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART1;
+  HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
 
-   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
+  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq() / 1000);
 
-   HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
-   /* SysTick_IRQn interrupt configuration */
-   HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+  /* SysTick_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 } /*--------------------------------------------------------------------------*/
 
-void MX_TIM14_Init()
-{
-   htim14.Instance = TIM14;
-   htim14.Init.Prescaler = 23999;
-   htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
-   htim14.Init.Period = 1999;
-   htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-   HAL_TIM_Base_Init(&htim14);
+void MX_TIM14_Init() {
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 23999;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 1999;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  HAL_TIM_Base_Init(&htim14);
 
-   HAL_TIM_Base_Start_IT(&htim14); // start timer interrupts
-   HAL_NVIC_SetPriority(TIM14_IRQn, 0, 1);
-   HAL_NVIC_EnableIRQ(TIM14_IRQn);
+  HAL_TIM_Base_Start_IT(&htim14); // start timer interrupts
+  HAL_NVIC_SetPriority(TIM14_IRQn, 0, 1);
+  HAL_NVIC_EnableIRQ(TIM14_IRQn);
 } /*--------------------------------------------------------------------------*/
 
-void MX_TIM16_Init()
-{
+void MX_TIM16_Init() {
 
-   TIM_OC_InitTypeDef sConfigOC;
+  TIM_OC_InitTypeDef sConfigOC;
 
-   htim16.Instance = TIM16;
-   htim16.Init.Prescaler = 19;
-   htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
-   htim16.Init.Period = 99;
-   HAL_TIM_PWM_Init(&htim16);
+  htim16.Instance = TIM16;
+  htim16.Init.Prescaler = 19;
+  htim16.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim16.Init.Period = 99;
+  HAL_TIM_PWM_Init(&htim16);
 
-
-   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-   sConfigOC.Pulse = 50;
-   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-   HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1);
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 50;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1);
 }
 
-void MX_TIM17_Init()
-{
+void MX_TIM17_Init() {
 
-   TIM_OC_InitTypeDef sConfigOC;
+  TIM_OC_InitTypeDef sConfigOC;
 
-   htim17.Instance = TIM17;
-   htim17.Init.Prescaler = 19;
-   htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
-   htim17.Init.Period = 99;
-   HAL_TIM_PWM_Init(&htim17);
+  htim17.Instance = TIM17;
+  htim17.Init.Prescaler = 19;
+  htim17.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim17.Init.Period = 99;
+  HAL_TIM_PWM_Init(&htim17);
 
-   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-   sConfigOC.Pulse = 50;
-   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
-   HAL_TIM_PWM_ConfigChannel(&htim17, &sConfigOC, TIM_CHANNEL_1);
+  sConfigOC.OCMode = TIM_OCMODE_PWM1;
+  sConfigOC.Pulse = 50;
+  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+  sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
+  HAL_TIM_PWM_ConfigChannel(&htim17, &sConfigOC, TIM_CHANNEL_1);
 }
 
-void MX_GPIO_Init()
-{
-   GPIO_InitTypeDef GPIO_InitStruct;
+void MX_GPIO_Init() {
+  GPIO_InitTypeDef GPIO_InitStruct;
 
-   /* GPIO Ports Clock Enable */
-   __HAL_RCC_GPIOA_CLK_ENABLE();
-   __HAL_RCC_GPIOB_CLK_ENABLE();
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
-   /*Configure GPIO pin : LD3_Pin */
-   GPIO_InitStruct.Pin = LD3_Pin;
-   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-   GPIO_InitStruct.Pull = GPIO_NOPULL;
-   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-   HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
+  /*Configure GPIO pin : LD3_Pin */
+  GPIO_InitStruct.Pin = LD3_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(LD3_GPIO_Port, &GPIO_InitStruct);
 
-   /*Configure GPIO pin Output Level */
-   HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(LD3_GPIO_Port, LD3_Pin, GPIO_PIN_RESET);
 } /*--------------------------------------------------------------------------*/
+
+/**
+  * @brief USART1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART1_UART_Init()
+{
+
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
+  huart_bluetooth.Instance = USART1;
+  huart_bluetooth.Init.BaudRate = 9600;
+  huart_bluetooth.Init.WordLength = UART_WORDLENGTH_8B;
+  huart_bluetooth.Init.StopBits = UART_STOPBITS_1;
+  huart_bluetooth.Init.Parity = UART_PARITY_NONE;
+  huart_bluetooth.Init.Mode = UART_MODE_TX_RX;
+  huart_bluetooth.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart_bluetooth.Init.OverSampling = UART_OVERSAMPLING_16;
+
+  if (HAL_UART_Init(&huart_bluetooth) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init()
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart_usb.Instance = USART2;
+  huart_usb.Init.BaudRate = 9600;
+  huart_usb.Init.WordLength = UART_WORDLENGTH_8B;
+  huart_usb.Init.StopBits = UART_STOPBITS_1;
+  huart_usb.Init.Parity = UART_PARITY_NONE;
+  huart_usb.Init.Mode = UART_MODE_TX_RX;
+  huart_usb.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart_usb.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart_usb) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.
   * @param  None
   * @retval None
   */
-static void Error_Handler()
-{
-   __asm__("BKPT");
-   while (1) { }
+static void Error_Handler() {
+  __asm__("BKPT");
+  while (true) {}
 }
 
 #ifdef USE_FULL_ASSERT
