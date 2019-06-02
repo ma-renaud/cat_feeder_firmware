@@ -38,8 +38,8 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define LD3_Pin GPIO_PIN_3
-#define LD3_GPIO_Port GPIOB
+#define LD1_Pin GPIO_PIN_5
+#define LD1_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

@@ -3,7 +3,7 @@ message(STATUS "CMAKE_TOOLCHAIN_FILE='${CMAKE_TOOLCHAIN_FILE}'")
 project(cat_feeder CXX C ASM)
 cmake_minimum_required(VERSION 3.5.0)
 
-add_definitions(-DSTM32F042x6)
+add_definitions(-DSTM32F030x8)
 #SET(CMAKE_VERBOSE_MAKEFILE ON)
 
 file(GLOB INCLUDES  "include/*.h"
