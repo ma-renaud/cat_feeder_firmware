@@ -21,7 +21,7 @@ file(GLOB_RECURSE USER_SOURCES  "src/*.c"
                                 "system/src/newlib/*.cpp"
                                 "system/src/stm32f0xx/*.c"
                                 "system/src/cmsis/system_stm32f0xx.c"
-                                "system/src/cmsis/startup_stm32f042x6.S")
+                                "system/src/cmsis/startup_stm32f030x8.S")
 
 file(GLOB_RECURSE HAL_SOURCES "system/stm32f0xx/*.c")
 

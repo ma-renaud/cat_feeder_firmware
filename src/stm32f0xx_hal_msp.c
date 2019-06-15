@@ -37,8 +37,7 @@
 /**
   * Initializes the Global MSP.
   */
-void HAL_MspInit(void)
-{
+void HAL_MspInit(void) {
   __HAL_RCC_SYSCFG_CLK_ENABLE();
 
   /* System interrupt init*/
@@ -52,11 +51,9 @@ void HAL_MspInit(void)
 * @param huart: UART handle pointer
 * @retval None
 */
-void HAL_UART_MspInit(UART_HandleTypeDef* huart)
-{
+void HAL_UART_MspInit(UART_HandleTypeDef *huart) {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
-  if(huart->Instance==USART1)
-  {
+  if (huart->Instance == USART1) {
     /* USER CODE BEGIN USART1_MspInit 0 */
 
     /* USER CODE END USART1_MspInit 0 */
@@ -68,7 +65,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_9|GPIO_PIN_10;
+    GPIO_InitStruct.Pin = GPIO_PIN_9 | GPIO_PIN_10;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
@@ -78,9 +75,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     /* USER CODE BEGIN USART1_MspInit 1 */
 
     /* USER CODE END USART1_MspInit 1 */
-  }
-  else if(huart->Instance==USART2)
-  {
+  } else if (huart->Instance == USART2) {
     /* USER CODE BEGIN USART2_MspInit 0 */
 
     /* USER CODE END USART2_MspInit 0 */
@@ -92,7 +87,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     PA2     ------> USART2_TX
     PA3     ------> USART2_RX
     */
-    GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
+    GPIO_InitStruct.Pin = GPIO_PIN_4 | GPIO_PIN_3;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
@@ -106,48 +101,43 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 
 }
 
-void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
-{
+void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim) {
   GPIO_InitTypeDef GPIO_InitStruct;
 
-  if(htim->Instance==TIM16)
-  {
-	  __HAL_RCC_TIM16_CLK_ENABLE();
+  if (htim->Instance == TIM16) {
+    __HAL_RCC_TIM16_CLK_ENABLE();
 
-	  GPIO_InitStruct.Pin = GPIO_PIN_6;
-	  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	  GPIO_InitStruct.Pull = GPIO_NOPULL;
-	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	  GPIO_InitStruct.Alternate = GPIO_AF5_TIM16;
-	  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-  }
-
-  if(htim->Instance==TIM17)
-  {
-	  __HAL_RCC_TIM17_CLK_ENABLE();
-
-	  GPIO_InitStruct.Pin = GPIO_PIN_7;
-	  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	  GPIO_InitStruct.Pull = GPIO_NOPULL;
-	  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	  GPIO_InitStruct.Alternate = GPIO_AF5_TIM17;
-	  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    GPIO_InitStruct.Pin = PWM1_Pin;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF2_TIM16;
+    HAL_GPIO_Init(PWM1_Port, &GPIO_InitStruct);
   }
 }
 
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
-{
-  if(htim_base->Instance==TIM14)
-  {
+void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim_base) {
+  if (htim_base->Instance == TIM6) {
+    __HAL_RCC_TIM6_CLK_ENABLE();
+    HAL_NVIC_SetPriority(TIM6_IRQn, 0, 0);
+    HAL_NVIC_EnableIRQ(TIM6_IRQn);
+  }
+
+  if (htim_base->Instance == TIM14) {
     __HAL_RCC_TIM14_CLK_ENABLE();
-
+    HAL_NVIC_SetPriority(TIM14_IRQn, 0, 1);
+    HAL_NVIC_EnableIRQ(TIM14_IRQn);
   }
 }
 
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* htim_base)
-{
-  if(htim_base->Instance==TIM14)
-  {
+void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim_base) {
+  if (htim_base->Instance == TIM6) {
+    __HAL_RCC_TIM6_CLK_DISABLE();
+    HAL_NVIC_DisableIRQ(TIM6_IRQn);
+  }
+
+  if (htim_base->Instance == TIM14) {
     __HAL_RCC_TIM14_CLK_DISABLE();
+    HAL_NVIC_DisableIRQ(TIM14_IRQn);
   }
 }

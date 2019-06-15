@@ -36,6 +36,7 @@
 #include "stm32f0xx_it.h"
 
 extern TIM_HandleTypeDef htim14;
+extern TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN 0 */
 
@@ -69,5 +70,13 @@ void SysTick_Handler(void)
 void TIM14_IRQHandler(void)
 {
   HAL_TIM_IRQHandler(&htim14);
+}
+
+/**
+* @brief This function handles TIM15 global interrupt.
+*/
+void TIM6_IRQHandler(void)
+{
+  HAL_TIM_IRQHandler(&htim6);
 }
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
