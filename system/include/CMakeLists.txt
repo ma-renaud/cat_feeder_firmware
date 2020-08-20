@@ -1,0 +1,2 @@
+add_subdirectory(cmsis)
+add_subdirectory(stm32f0xx_hal_driver)
