@@ -46,11 +46,12 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
 
 else()
   #Add the compiler flag that are GLOBAL for all the libraries for UTest
-  string(APPEND CMAKE_CXX_FLAGS_UTEST "-Og")
-  string(APPEND CMAKE_C_FLAGS_UTEST "-Og")
+  string(APPEND CMAKE_CXX_FLAGS_UTEST "-DDEBUG-Og")
+  string(APPEND CMAKE_C_FLAGS_UTEST "-DDEBUG-Og")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
+  set(CMAKE_BUILD_TYPE Debug)
   enable_testing()
   add_subdirectory(test)
 else()

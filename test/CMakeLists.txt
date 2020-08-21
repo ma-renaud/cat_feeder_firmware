@@ -1,4 +1,4 @@
-project(cat_feeder C CXX)
+project(cat_feeder_tests C CXX)
 cmake_minimum_required(VERSION 3.5.0)
 
 # Enable ExternalProject CMake module
@@ -44,8 +44,6 @@ include_directories("${source_dir}/googletest/include"
 
 message(STATUS "source_dir='${source_dir}'")
 
-set(CMAKE_CXX_STANDARD 14)
-
 file(GLOB INCLUDE_FILES "../include/*.h")
 
 include_directories("include")
@@ -64,5 +62,5 @@ include_directories("../include")
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-add_executable(TestingWithGTest ${SOURCE_FILES} ${INCLUDE_FILES})
-target_link_libraries(TestingWithGTest Threads::Threads libgtest libgmock)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES})
+target_link_libraries(${PROJECT_NAME} Threads::Threads libgtest libgmock)
