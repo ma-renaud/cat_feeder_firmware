@@ -15,7 +15,6 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   endif()
 endif()
 
-
 # Set the project name
 project(cat_feeder VERSION 0.0.1 LANGUAGES CXX C ASM)
 
@@ -53,7 +52,7 @@ endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   enable_testing()
-  add_subdirectory(tests)
+  add_subdirectory(test)
 else()
   add_subdirectory(system)
   add_subdirectory(src)
