@@ -81,6 +81,7 @@ else()
     -T"STM32F030R8Tx_FLASH.ld"
     --specs=nano.specs
     --specs=nosys.specs
+    -Wl,--gc-sections
     -Wl,-Map=${PROJECT_NAME}.map
     -Wl,--print-memory-usage
     )
