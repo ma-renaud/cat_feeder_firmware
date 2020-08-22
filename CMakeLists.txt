@@ -52,12 +52,13 @@ endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   set(CMAKE_BUILD_TYPE Debug)
+  add_subdirectory(includes)
   enable_testing()
   add_subdirectory(test)
 else()
   add_subdirectory(system)
-  add_subdirectory(src)
-  add_subdirectory(include)
+  add_subdirectory(includes)
+  add_subdirectory(sources)
 
   add_executable(${PROJECT_NAME}
     ${${PROJECT_NAME}_SOURCES}

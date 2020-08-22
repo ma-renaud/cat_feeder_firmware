@@ -1,7 +1,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
 #include "stm32f0xx_hal.h"
-//#include "diag/Trace.h"
+//#includes "diag/Trace.h"
 #include <string>
 
 TIM_HandleTypeDef htim6;

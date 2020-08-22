@@ -1,66 +1,45 @@
-project(cat_feeder_tests C CXX)
-cmake_minimum_required(VERSION 3.5.0)
+cmake_minimum_required(VERSION 3.8)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-# Enable ExternalProject CMake module
-include(ExternalProject)
+get_filename_component(TESTED_CMAKE_CURRENT_SOURCE_DIR "../" REALPATH)
+set(TESTED_INC_DIRECTORYS ${${PROJECT_NAME}_INC_DIRECTORIES})
 
-# Download and install GoogleTest
-ExternalProject_Add(
-        gtest
-        URL https://github.com/google/googletest/archive/master.zip
-        PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-        CMAKE_ARGS -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-        # Disable install step
-        INSTALL_COMMAND ""
+project(${PROJECT_NAME}_tests C CXX)
+
+include(CPM)
+CPMAddPackage(
+  NAME Catch2
+  GITHUB_REPOSITORY catchorg/Catch2
+  VERSION 2.13.0
+  OPTIONS
+  "BUILD_TESTING OFF"
+  "CATCH_BUILD_EXAMPLES OFF"
+  "CATCH_ENABLE_COVERAGE OFF"
 )
 
-# Get GTest source and binary directories from CMake project
-ExternalProject_Get_Property(gtest source_dir binary_dir)
+add_subdirectory(sources)
+add_subdirectory(includes)
 
-# Create a libgtest target to be used as a dependency by test programs
-add_library(libgtest IMPORTED STATIC GLOBAL)
-add_dependencies(libgtest gtest)
+# Add selected sources from tested project
+list(APPEND TESTED_SOURCES
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/simpleProtocolParser.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serialParser.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serialParserStates.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/f0GpioMemory.cpp
+  )
 
-# Set libgtest properties
-set_target_properties(libgtest PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/libgtest.a"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-        )
+add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES} ${TESTED_SOURCES})
 
-# Create a libgmock target to be used as a dependency by test programs
-add_library(libgmock IMPORTED STATIC GLOBAL)
-add_dependencies(libgmock gtest)
+target_include_directories(${PROJECT_NAME} PRIVATE ${${PROJECT_NAME}_INC_DIRECTORYS} ${TESTED_INC_DIRECTORYS})
 
-# Set libgmock properties
-set_target_properties(libgmock PROPERTIES
-        "IMPORTED_LOCATION" "${binary_dir}/lib/libgmock.a"
-        "IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-        )
+target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2)
+target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_options(${PROJECT_NAME} PUBLIC -Wunused-parameter -Wextra -Wall)
 
-# I couldn't make it work with INTERFACE_INCLUDE_DIRECTORIES
-include_directories("${source_dir}/googletest/include"
-        "${source_dir}/googlemock/include"
-        "../include")
+if (${CMAKE_BUILD_TYPE} MATCHES Debug)
+  target_compile_options(${PROJECT_NAME} PUBLIC -O0)
+else ()
+  target_compile_options(${PROJECT_NAME} PUBLIC -O3)
+endif ()
 
-message(STATUS "source_dir='${source_dir}'")
-
-file(GLOB INCLUDE_FILES "../include/*.h")
-
-include_directories("include")
-include_directories("system/include")
-include_directories("system/include/cmsis")
-include_directories("system/include/stm32f0xx")
-
-file(GLOB_RECURSE SOURCE_FILES "../src/simpleProtocolParser.cpp"
-                               "../src/serialParser.cpp"
-                               "../src/serialParserStates.cpp"
-                               "../src/f0GpioMemory.cpp"
-                               "src/*.cpp")
-
-include_directories("../include")
-
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-find_package(Threads REQUIRED)
-
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${INCLUDE_FILES})
-target_link_libraries(${PROJECT_NAME} Threads::Threads libgtest libgmock)
+add_test(NAME ${PROJECT_NAME} COMMAND ${PROJECT_NAME})

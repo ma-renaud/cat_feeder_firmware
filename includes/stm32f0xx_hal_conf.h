@@ -197,27 +197,27 @@
 #endif /* HAL_CORTEX_MODULE_ENABLED */
 
 #ifdef HAL_ADC_MODULE_ENABLED
- #include "stm32f0xx_hal_adc.h"
+ #includes "stm32f0xx_hal_adc.h"
 #endif /* HAL_ADC_MODULE_ENABLED */
 
 #ifdef HAL_CAN_MODULE_ENABLED
- #include "stm32f0xx_hal_can.h"
+ #includes "stm32f0xx_hal_can.h"
 #endif /* HAL_CAN_MODULE_ENABLED */
 
 #ifdef HAL_CEC_MODULE_ENABLED
- #include "stm32f0xx_hal_cec.h"
+ #includes "stm32f0xx_hal_cec.h"
 #endif /* HAL_CEC_MODULE_ENABLED */
 
 #ifdef HAL_COMP_MODULE_ENABLED
- #include "stm32f0xx_hal_comp.h"
+ #includes "stm32f0xx_hal_comp.h"
 #endif /* HAL_COMP_MODULE_ENABLED */
 
 #ifdef HAL_CRC_MODULE_ENABLED
- #include "stm32f0xx_hal_crc.h"
+ #includes "stm32f0xx_hal_crc.h"
 #endif /* HAL_CRC_MODULE_ENABLED */
 
 #ifdef HAL_DAC_MODULE_ENABLED
- #include "stm32f0xx_hal_dac.h"
+ #includes "stm32f0xx_hal_dac.h"
 #endif /* HAL_DAC_MODULE_ENABLED */
 
 #ifdef HAL_FLASH_MODULE_ENABLED
@@ -225,23 +225,23 @@
 #endif /* HAL_FLASH_MODULE_ENABLED */
 
 #ifdef HAL_I2C_MODULE_ENABLED
- #include "stm32f0xx_hal_i2c.h"
+ #includes "stm32f0xx_hal_i2c.h"
 #endif /* HAL_I2C_MODULE_ENABLED */
 
 #ifdef HAL_I2S_MODULE_ENABLED
- #include "stm32f0xx_hal_i2s.h"
+ #includes "stm32f0xx_hal_i2s.h"
 #endif /* HAL_I2S_MODULE_ENABLED */
 
 #ifdef HAL_IRDA_MODULE_ENABLED
- #include "stm32f0xx_hal_irda.h"
+ #includes "stm32f0xx_hal_irda.h"
 #endif /* HAL_IRDA_MODULE_ENABLED */
 
 #ifdef HAL_IWDG_MODULE_ENABLED
- #include "stm32f0xx_hal_iwdg.h"
+ #includes "stm32f0xx_hal_iwdg.h"
 #endif /* HAL_IWDG_MODULE_ENABLED */
 
 #ifdef HAL_PCD_MODULE_ENABLED
- #include "stm32f0xx_hal_pcd.h"
+ #includes "stm32f0xx_hal_pcd.h"
 #endif /* HAL_PCD_MODULE_ENABLED */
 
 #ifdef HAL_PWR_MODULE_ENABLED
@@ -249,19 +249,19 @@
 #endif /* HAL_PWR_MODULE_ENABLED */
 
 #ifdef HAL_RTC_MODULE_ENABLED
- #include "stm32f0xx_hal_rtc.h"
+ #includes "stm32f0xx_hal_rtc.h"
 #endif /* HAL_RTC_MODULE_ENABLED */
 
 #ifdef HAL_SMARTCARD_MODULE_ENABLED
- #include "stm32f0xx_hal_smartcard.h"
+ #includes "stm32f0xx_hal_smartcard.h"
 #endif /* HAL_SMARTCARD_MODULE_ENABLED */
 
 #ifdef HAL_SMBUS_MODULE_ENABLED
- #include "stm32f0xx_hal_smbus.h"
+ #includes "stm32f0xx_hal_smbus.h"
 #endif /* HAL_SMBUS_MODULE_ENABLED */
 
 #ifdef HAL_SPI_MODULE_ENABLED
- #include "stm32f0xx_hal_spi.h"
+ #includes "stm32f0xx_hal_spi.h"
 #endif /* HAL_SPI_MODULE_ENABLED */
 
 #ifdef HAL_TIM_MODULE_ENABLED
@@ -269,7 +269,7 @@
 #endif /* HAL_TIM_MODULE_ENABLED */
 
 #ifdef HAL_TSC_MODULE_ENABLED
- #include "stm32f0xx_hal_tsc.h"
+ #includes "stm32f0xx_hal_tsc.h"
 #endif /* HAL_TSC_MODULE_ENABLED */
 
 #ifdef HAL_UART_MODULE_ENABLED
@@ -277,11 +277,11 @@
 #endif /* HAL_UART_MODULE_ENABLED */
 
 #ifdef HAL_USART_MODULE_ENABLED
- #include "stm32f0xx_hal_usart.h"
+ #includes "stm32f0xx_hal_usart.h"
 #endif /* HAL_USART_MODULE_ENABLED */
 
 #ifdef HAL_WWDG_MODULE_ENABLED
- #include "stm32f0xx_hal_wwdg.h"
+ #includes "stm32f0xx_hal_wwdg.h"
 #endif /* HAL_WWDG_MODULE_ENABLED */
 
 /* Exported macro ------------------------------------------------------------*/

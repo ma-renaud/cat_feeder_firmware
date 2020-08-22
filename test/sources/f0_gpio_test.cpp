@@ -1,8 +1,6 @@
 #include <memory>
-#include "gmock/gmock.h"
+#include "catch2/catch.hpp"
 #include "f0GpioMemory.h"
-
-using namespace testing;
 
 class F0Gpio : public IGpio {
 public:
@@ -17,21 +15,15 @@ private:
   std::unique_ptr<F0GpioMemory> gpio_memory = std::make_unique<F0GpioMemory>();
 };
 
-class GpioGroup : public Test {
-public:
+TEST_CASE("Gpio", "[gpio]") {
   std::unique_ptr<F0Gpio> gpio;
+  gpio = std::make_unique<F0Gpio>();
 
-  void SetUp() override {
-    gpio = std::make_unique<F0Gpio>();
+  SECTION("Test instance size") {
+    F0GpioMemory instance;
+    REQUIRE(1 == 1);
   }
 
-  void TearDown() override {
-    gpio.reset();
-  }
-};
-
-/*TEST_F(GpioGroup, TestTest)
-{
-   FAIL();
-}*/
+  gpio.reset();
+}
 
