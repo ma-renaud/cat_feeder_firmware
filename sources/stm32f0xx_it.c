@@ -51,32 +51,32 @@ extern TIM_HandleTypeDef htim6;
 /**
 * @brief This function handles System tick timer.
 */
-void SysTick_Handler(void)
-{
-  HAL_IncTick();
-  HAL_SYSTICK_IRQHandler();
-}
+//void SysTick_Handler(void)
+//{
+//  HAL_IncTick();
+//  HAL_SYSTICK_IRQHandler();
+//}
 
-/******************************************************************************/
-/* STM32F0xx Peripheral Interrupt Handlers                                    */
-/* Add here the Interrupt Handlers for the used peripherals.                  */
-/* For the available peripheral interrupt handler names,                      */
-/* please refer to the startup file (startup_stm32f0xx.s).                    */
-/******************************************************************************/
-
-/**
-* @brief This function handles TIM14 global interrupt.
-*/
-void TIM14_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&htim14);
-}
-
-/**
-* @brief This function handles TIM15 global interrupt.
-*/
-void TIM6_IRQHandler(void)
-{
-  HAL_TIM_IRQHandler(&htim6);
-}
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
+///******************************************************************************/
+///* STM32F0xx Peripheral Interrupt Handlers                                    */
+///* Add here the Interrupt Handlers for the used peripherals.                  */
+///* For the available peripheral interrupt handler names,                      */
+///* please refer to the startup file (startup_stm32f0xx.s).                    */
+///******************************************************************************/
+//
+///**
+//* @brief This function handles TIM14 global interrupt.
+//*/
+//void TIM14_IRQHandler(void)
+//{
+//  HAL_TIM_IRQHandler(&htim14);
+//}
+//
+///**
+//* @brief This function handles TIM15 global interrupt.
+//*/
+//void TIM6_IRQHandler(void)
+//{
+//  HAL_TIM_IRQHandler(&htim6);
+//}
+///************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
