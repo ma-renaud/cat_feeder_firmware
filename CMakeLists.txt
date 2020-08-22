@@ -39,15 +39,15 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   #Add the compiler flag that are GLOBAL for all the libraries for Debug and Release
   string(APPEND CMAKE_CXX_FLAGS "-fno-use-cxa-atexit	-fno-exceptions	-fno-rtti -g")
   string(APPEND CMAKE_C_FLAGS "-g ")
-  string(APPEND CMAKE_CXX_FLAGS_DEBUG "-Og")
-  string(APPEND CMAKE_C_FLAGS_DEBUG "-Og")
+  string(APPEND CMAKE_CXX_FLAGS_DEBUG "-O0")
+  string(APPEND CMAKE_C_FLAGS_DEBUG "-O0")
   string(APPEND CMAKE_CXX_FLAGS_RELEASE "-Os")
   string(APPEND CMAKE_C_FLAGS_RELEASE "-Os")
 
 else()
   #Add the compiler flag that are GLOBAL for all the libraries for UTest
-  string(APPEND CMAKE_CXX_FLAGS_UTEST "-DDEBUG-Og")
-  string(APPEND CMAKE_C_FLAGS_UTEST "-DDEBUG-Og")
+  string(APPEND CMAKE_CXX_FLAGS_UTEST "-DDEBUG-O0")
+  string(APPEND CMAKE_C_FLAGS_UTEST "-DDEBUG-O0")
 endif()
 
 if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
@@ -59,6 +59,7 @@ else()
   add_subdirectory(system)
   add_subdirectory(includes)
   add_subdirectory(sources)
+  include(console)
 
   add_executable(${PROJECT_NAME}
     ${${PROJECT_NAME}_SOURCES}

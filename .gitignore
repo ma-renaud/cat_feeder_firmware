@@ -1,6 +1,7 @@
 /build/
 /.idea/*
 /test/.idea/*
+/console/
 
 .metadata
 bin/
