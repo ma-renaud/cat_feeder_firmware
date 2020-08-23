@@ -1,29 +1,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
+//#include "stm32f0xx_hal.h"
 
 #include "rcc.h"
 #include "IGpio.h"
 #include "f0Gpio.h"
 
-#include <string>
-#include "console.h"
+#include <memory>
+//#include <string>
+//#include "console.h"
 
-/* Private variables ---------------------------------------------------------*/
-
-/* Private function prototypes -----------------------------------------------*/
-static void Error_Handler();
-static void MX_GPIO_Init();
-static void MX_TIM6_Init();
-static void MX_TIM14_Init();
-static void MX_TIM16_Init();
-static void MX_USART1_UART_Init();
-static void MX_USART2_UART_Init();
 
 int main() {
   /* MCU Configuration----------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-//  HAL_Init();
+  //HAL_Init();
 
   /* Configure the system clock */
   __set_PRIMASK(1);
@@ -34,28 +26,34 @@ int main() {
   __set_PRIMASK(0);
 
   int test = SystemCoreClock;
-  led2->write(GPIO_PinState::SET);
+  led2->write(GPIO_PinState::RESET);
 
-  /* Initialize all configured peripherals */
-//  MX_GPIO_Init();
-//  MX_TIM6_Init();
-//  MX_TIM14_Init();
-//  MX_TIM16_Init();
-//  MX_USART1_UART_Init();
-//  MX_USART2_UART_Init();
-
-//  huart = &huart_usb;
-//
-//  HAL_TIM_Base_Start_IT(&htim6); // start timer interrupts
-//  HAL_TIM_Base_Start_IT(&htim14); // start timer interruptss
-//  HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-//
-//  htim16.Instance->CCR1 = 16;   //(20ms*0.16)/2 = 1.6ms pulse
 //  Console cli(io, cli_buffer, cli_root_table, true, ">", "\r\n");
 
-  while (true) {}
+  uint32_t counter = 0;
+  while (true) {
+    counter++;
+    if (counter >= 2000000u) {
+      led2->toggle();
+      counter = 0;
+    }
+  }
 
 } /*--------------------------------------------------------------------------*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void HardFault_Handler(void)
+{
+  while (1) {}
+}
+
+#ifdef __cplusplus
+}
+#endif
+
 
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 //  std::string msg = "boom\r\n";
@@ -108,39 +106,6 @@ int main() {
 //  HAL_TIM_PWM_ConfigChannel(&htim16, &sConfigOC, TIM_CHANNEL_1);
 //} /*--------------------------------------------------------------------------*/
 //
-//void MX_GPIO_Init() {
-//  GPIO_InitTypeDef GPIO_InitStruct;
-//
-//  /* GPIO Ports Clock Enable */
-//  __HAL_RCC_GPIOA_CLK_ENABLE();
-//  __HAL_RCC_GPIOB_CLK_ENABLE();
-//
-//  /*Configure GPIO pin : LD1_Pin */
-//  GPIO_InitStruct.Pin = LD1_Pin;
-//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-//  GPIO_InitStruct.Pull = GPIO_NOPULL;
-//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-//  HAL_GPIO_Init(LD1_GPIO_Port, &GPIO_InitStruct);
-//
-//  /*Configure GPIO pin : LD2_Pin */
-//  GPIO_InitStruct.Pin = LD2_Pin;
-//  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-//  GPIO_InitStruct.Pull = GPIO_NOPULL;
-//  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-//  HAL_GPIO_Init(LD2_GPIO_Port, &GPIO_InitStruct);
-//
-//  /*Configure GPIO pin : BTN1_Pin */
-//  GPIO_InitStruct.Pin = GPIO_PIN_2;
-//  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-//  GPIO_InitStruct.Pull = GPIO_NOPULL;
-//  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-//
-//  /*Configure GPIO pin Output Level */
-//  HAL_GPIO_WritePin(LD1_GPIO_Port, LD1_Pin, GPIO_PIN_RESET);
-//  HAL_GPIO_WritePin(LD2_GPIO_Port, LD2_Pin, GPIO_PIN_RESET);
-//} /*--------------------------------------------------------------------------*/
-//
-///**
 //  * @brief USART1 Initialization Function
 //  * @param None
 //  * @retval None

@@ -2,6 +2,7 @@
 #include "stm32f0xx.h"
 
 #define Milliseconds ((uint32_t) 1000)
+uint32_t systick = 0;
 
 void SystemClock_Config() {
   // RCC configuration
@@ -15,6 +16,15 @@ void SystemClock_Config() {
   SysTick_Config(SystemCoreClock / Milliseconds);
 }
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void SysTick_Handler(void)
 {
+  systick++;
 }
+
+#ifdef __cplusplus
+}
+#endif
