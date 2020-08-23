@@ -1,17 +1,16 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f0xx.h"
-#include "stm32f0xx_hal.h"
-//#includes "diag/Trace.h"
+
+#include "rcc.h"
+#include "IGpio.h"
+#include "f0Gpio.h"
+
 #include <string>
 #include "console.h"
-
-#define Milliseconds ((uint32_t) 1000)
-
 
 /* Private variables ---------------------------------------------------------*/
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config();
 static void Error_Handler();
 static void MX_GPIO_Init();
 static void MX_TIM6_Init();
@@ -19,10 +18,6 @@ static void MX_TIM14_Init();
 static void MX_TIM16_Init();
 static void MX_USART1_UART_Init();
 static void MX_USART2_UART_Init();
-
-void SysTick_Handler(void)
-{
-}
 
 int main() {
   /* MCU Configuration----------------------------------------------------------*/
@@ -33,9 +28,13 @@ int main() {
   /* Configure the system clock */
   __set_PRIMASK(1);
   SystemClock_Config();
+  RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
+  std::unique_ptr<IGpio> led2 = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_5);
+  led2->init(GPIO_Mode::DIGITAL_OUT);
   __set_PRIMASK(0);
 
   int test = SystemCoreClock;
+  led2->write(GPIO_PinState::SET);
 
   /* Initialize all configured peripherals */
 //  MX_GPIO_Init();
@@ -71,17 +70,7 @@ int main() {
 
 /** System Clock Configuration
 */
-void SystemClock_Config() {
-  // RCC configuration
-  RCC->CR = RCC_CR_HSION;
-  RCC->CFGR = RCC_CFGR_PLLMUL12 | RCC_CFGR_SW_PLL;
-  RCC->CR |= RCC_CR_PLLON;
 
-  while (!(RCC->CR & RCC_CR_PLLRDY)); // Wait for the PPL to be ready
-
-  SystemCoreClockUpdate();
-  SysTick_Config(SystemCoreClock / Milliseconds);
-}
 
 //void MX_TIM6_Init() {
 //  htim6.Instance = TIM6;

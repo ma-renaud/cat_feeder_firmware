@@ -13,6 +13,7 @@ public:
   GPIO_PinState readPin(GPIO_Pin pin);
   void write(GPIO_Pin pin, GPIO_PinState PinState);
   void toggle(GPIO_Pin pin);
+  void init(GPIO_Pin pin, GPIO_Mode mode);
 
 protected:
   device_register MODER;
@@ -25,6 +26,13 @@ protected:
   device_register LCKR;
   device_register AFR[2];
   device_register BRR;
+
+private:
+  static constexpr uint8_t NB_PINS = 16;
+  void setMode(uint8_t position, GPIO_Direction_Mode mode);
+  void setOutputType(uint8_t position, GPIO_Output_Type type);
+  void setOutputSpeed(uint8_t position, GPIO_Output_Speed speed);
+  void setPull(uint8_t position, GPIO_Pupd pupd);
 };
 
 #endif //F0GPIOMEMORY_H

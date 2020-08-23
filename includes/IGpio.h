@@ -1,6 +1,15 @@
 #ifndef CAT_FEEDER_IGPIO_H
 #define CAT_FEEDER_IGPIO_H
 
+enum class GPIO_Port : uint8_t
+{
+  PORTA = 0,
+  PORTB,
+  PORTC,
+  PORTD,
+  PORTF
+};
+
 enum class GPIO_Pin : uint16_t
 {
   PIN_0   = 0x0001,
@@ -24,16 +33,48 @@ enum class GPIO_Pin : uint16_t
 
 enum class GPIO_PinState : uint8_t
 {
-  GPIO_PIN_RESET = 0,
-  GPIO_PIN_SET
+  RESET = 0,
+  SET
+};
+
+enum class GPIO_Mode : uint8_t {
+  DIGITAL_OUT = 0,
+  DIGITAL_IN
+};
+
+enum class GPIO_Direction_Mode : uint8_t {
+  INPUT = 0,
+  OUTPUT,
+  ALTERNATE_FUNCTION,
+  ANALOG
+};
+
+enum class GPIO_Output_Type : uint8_t {
+  PUSH_PULL = 0,
+  OPEN_DRAIN
+};
+
+enum class GPIO_Output_Speed : uint8_t {
+  LOW_SPEED = 0,
+  MEDIUM_SPEED,
+  FAST_SPEED,
+  HIGH_SPEED
+};
+
+enum class GPIO_Pupd : uint8_t {
+  NOPULL = 0,
+  PULLUP,
+  PULLDOWN,
+  RESERVED
 };
 
 class IGpio
 {
 public:
-  virtual GPIO_PinState   readPin(GPIO_Pin pin) = 0;
-  virtual void            writePin(GPIO_Pin pin, GPIO_PinState PinState) = 0;
-  virtual void            togglePin(GPIO_Pin pin) = 0;
+  virtual GPIO_PinState   read() = 0;
+  virtual void            write(GPIO_PinState PinState) = 0;
+  virtual void            toggle() = 0;
+  virtual void            init(GPIO_Mode mode) = 0;
 };
 
 #endif //CAT_FEEDER_IGPIO_H
