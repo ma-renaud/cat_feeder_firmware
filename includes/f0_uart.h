@@ -1,9 +1,9 @@
-#ifndef F0UART_H
-#define F0UART_H
+#ifndef F0_UART_H
+#define F0_UART_H
 
 #include <string>
-#include "IUart.h"
-#include "f0UartMemory.h"
+#include "i_uart.h"
+#include "f0_uart_memory.h"
 
 class F0Uart : public IUart {
 public:
@@ -22,4 +22,4 @@ private:
   F0UartMemory *uart_memory;
 };
 
-#endif //F0UART_H
+#endif //F0_UART_H

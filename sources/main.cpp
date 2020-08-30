@@ -3,11 +3,11 @@
 //#include "stm32f0xx_hal.h"
 
 #include "rcc.h"
-#include "IGpio.h"
+#include "i_gpio.h"
 #include "f0Gpio.h"
 
-#include "IUart.h"
-#include "f0Uart.h"
+#include "i_uart.h"
+#include "f0_uart.h"
 
 #include <memory>
 //#include <string>

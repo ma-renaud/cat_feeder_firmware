@@ -1,5 +1,5 @@
-#include "serialParserStates.h"
-#include "simpleProtocolParser.h"
+#include "serial_parser_states.h"
+#include "simple_protocol_parser.h"
 
 void WaitForStart::receiveChar(char received)
 {

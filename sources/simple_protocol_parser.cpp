@@ -1,5 +1,5 @@
-#include <simpleProtocolParser.h>
-#include "serialParserStates.h"
+#include <simple_protocol_parser.h>
+#include "serial_parser_states.h"
 
 SimpleProtocolParser::SimpleProtocolParser()
 {

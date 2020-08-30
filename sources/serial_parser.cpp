@@ -1,5 +1,5 @@
-#include "serialParser.h"
-#include "serialParserStates.h"
+#include "serial_parser.h"
+#include "serial_parser_states.h"
 
 SerialParser::SerialParser() {
   setState(std::make_shared<WaitForStart>(this));

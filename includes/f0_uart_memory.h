@@ -1,9 +1,9 @@
-#ifndef F0UARTMEMORY_H
-#define F0UARTMEMORY_H
+#ifndef F0_UART_MEMORY_H
+#define F0_UART_MEMORY_H
 
 #include <cstdint>
 #include <string>
-#include "IUart.h"
+#include "i_uart.h"
 
 #include "circular_buffer.h"
 
@@ -37,4 +37,4 @@ private:
   void set_baudrate(Uart_Baudrate baudrate);
 };
 
-#endif //F0UARTMEMORY_H
+#endif //F0_UART_MEMORY_H

@@ -1,5 +1,5 @@
-#ifndef IUART_H
-#define IUART_H
+#ifndef I_UART_H
+#define I_UART_H
 
 #include <cstdint>
 #include <string>
@@ -49,4 +49,4 @@ public:
   virtual void enable_interrupts(uint32_t priority) = 0;
 };
 
-#endif //IUART_H
+#endif //I_UART_H

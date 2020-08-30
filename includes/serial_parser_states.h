@@ -1,7 +1,7 @@
 #ifndef INCLUDE_SERIALPARSERSTATES_H_
 #define INCLUDE_SERIALPARSERSTATES_H_
 
-#include "processorState.h"
+#include "processor_state.h"
 #include <cstdint>
 
 class SimpleProtocolParser;

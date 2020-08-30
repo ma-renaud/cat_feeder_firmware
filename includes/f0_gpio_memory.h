@@ -1,8 +1,8 @@
-#ifndef F0GPIOMEMORY_H
-#define F0GPIOMEMORY_H
+#ifndef F0_GPIO_MEMORY_H
+#define F0_GPIO_MEMORY_H
 
 #include <cstdint>
-#include "IGpio.h"
+#include "i_gpio.h"
 
 typedef uint32_t volatile device_register;
 
@@ -37,4 +37,4 @@ private:
   static uint8_t get_pin_num(GPIO_Pin pin);
 };
 
-#endif //F0GPIOMEMORY_H
+#endif //F0_GPIO_MEMORY_H

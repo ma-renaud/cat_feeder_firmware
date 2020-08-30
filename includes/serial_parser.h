@@ -2,7 +2,7 @@
 #define _serialParser_H_
 
 #include <vector>
-#include "simpleProtocolParser.h"
+#include "simple_protocol_parser.h"
 
 class SerialParser: public SimpleProtocolParser
 {

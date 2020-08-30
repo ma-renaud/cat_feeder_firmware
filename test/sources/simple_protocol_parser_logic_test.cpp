@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "simpleProtocolParser.h"
+#include "simple_protocol_parser.h"
 
 class SimpleProtocolParserStub : public SimpleProtocolParser
 {

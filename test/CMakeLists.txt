@@ -22,10 +22,10 @@ add_subdirectory(includes)
 
 # Add selected sources from tested project
 list(APPEND TESTED_SOURCES
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/simpleProtocolParser.cpp
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serialParser.cpp
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serialParserStates.cpp
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/f0GpioMemory.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/simple_protocol_parser.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serial_parser.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serial_parser_states.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/f0_gpio_memory.cpp
   )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES} ${TESTED_SOURCES})

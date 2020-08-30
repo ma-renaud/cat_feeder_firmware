@@ -2,7 +2,7 @@
 #define INCLUDE_SIMPLEPROTOCOLPARSER_H_
 
 #include <memory>
-#include "processorState.h"
+#include "processor_state.h"
 
 class SimpleProtocolParser
 {

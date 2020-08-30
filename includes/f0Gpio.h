@@ -1,8 +1,8 @@
 #ifndef F0GPIO_H
 #define F0GPIO_H
 
-#include "IGpio.h"
-#include "f0GpioMemory.h"
+#include "i_gpio.h"
+#include "f0_gpio_memory.h"
 
 class F0Gpio : public IGpio {
 public:

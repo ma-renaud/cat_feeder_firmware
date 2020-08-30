@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "f0GpioMemory.h"
+#include "f0_gpio_memory.h"
 
 class GPIOExposed : public F0GpioMemory{
 public:

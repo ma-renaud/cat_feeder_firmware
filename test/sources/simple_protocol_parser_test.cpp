@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "serialParser.h"
+#include "serial_parser.h"
 
 TEST_CASE("SimpleProtocolParser", "[simple_protocol_parser]") {
   using Catch::Matchers::Equals;
