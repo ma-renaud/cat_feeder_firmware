@@ -1,5 +1,5 @@
-#ifndef F4GPIO_H
-#define F4GPIO_H
+#ifndef F0GPIO_H
+#define F0GPIO_H
 
 #include "IGpio.h"
 #include "f0GpioMemory.h"
@@ -7,6 +7,7 @@
 class F0Gpio : public IGpio {
 public:
   explicit F0Gpio(GPIO_Port port, GPIO_Pin pin) {
+    GPIO_TypeDef *port_addr;
     switch (port) {
     case GPIO_Port::PORTA:
       port_addr = GPIOA;
@@ -33,11 +34,11 @@ public:
   void write(GPIO_PinState PinState) override { gpio_memory->write(pin, PinState); }
   void toggle() override { gpio_memory->toggle(pin); }
   void init(GPIO_Mode mode) override { gpio_memory->init(this->pin, mode); }
+  void configure_alternate_function(GPIO_Alt_Func af, GPIO_Alt_Func_Mode mode) override { gpio_memory->set_alternate_function(pin, af, mode); }
 
 private:
   F0GpioMemory *gpio_memory;
-  GPIO_TypeDef *port_addr;
   GPIO_Pin pin;
 };
 
-#endif //F4GPIO_H
+#endif //F0GPIO_H

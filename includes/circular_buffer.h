@@ -51,9 +51,9 @@ public:
   }
 
 private:
-  std::atomic_size_t head {0};
-  std::atomic_size_t tail {0};
-  std::atomic_size_t buf_size {0};
+  std::size_t head {0};
+  std::size_t tail {0};
+  std::size_t buf_size {0};
   std::array<std::uint8_t, SIZE+1> buffer;
 };
 

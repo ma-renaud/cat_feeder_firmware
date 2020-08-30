@@ -37,7 +37,7 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   set(PROJECT_COMMON_COMPILE_FLAGS "${STM_COMMON_COMPILE_FLAGS}" CACHE STRING "" FORCE)
 
   #Add the compiler flag that are GLOBAL for all the libraries for Debug and Release
-  string(APPEND CMAKE_CXX_FLAGS "-fno-use-cxa-atexit	-fno-exceptions	-fno-rtti -g")
+  string(APPEND CMAKE_CXX_FLAGS "-fno-use-cxa-atexit -fno-exceptions	-fno-rtti -g")
   string(APPEND CMAKE_C_FLAGS "-g ")
   string(APPEND CMAKE_CXX_FLAGS_DEBUG "-O0")
   string(APPEND CMAKE_C_FLAGS_DEBUG "-O0")

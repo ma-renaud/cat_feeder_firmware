@@ -13,6 +13,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/stm32f0xx_hal_msp.c
   ${CMAKE_CURRENT_SOURCE_DIR}/stm32f0xx_it.c
   ${CMAKE_CURRENT_SOURCE_DIR}/rcc.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/f0UartMemory.cpp
   )
 
 # Update the project lists

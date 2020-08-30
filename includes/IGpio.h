@@ -38,15 +38,15 @@ enum class GPIO_PinState : uint8_t
 };
 
 enum class GPIO_Mode : uint8_t {
-  DIGITAL_OUT = 0,
-  DIGITAL_IN
+  DIGITAL_IN = 0,
+  DIGITAL_OUT,
+  ALTERNATE_FUNCTION,
+  ANALOG
 };
 
 enum class GPIO_Direction_Mode : uint8_t {
   INPUT = 0,
-  OUTPUT,
-  ALTERNATE_FUNCTION,
-  ANALOG
+  OUTPUT
 };
 
 enum class GPIO_Output_Type : uint8_t {
@@ -68,6 +68,22 @@ enum class GPIO_Pupd : uint8_t {
   RESERVED
 };
 
+enum class GPIO_Alt_Func: uint8_t {
+  AF0 = 0,
+  AF1,
+  AF2,
+  AF3,
+  AF4,
+  AF5,
+  AF6,
+  AF7
+};
+
+enum class GPIO_Alt_Func_Mode: uint8_t {
+  RX = 0,
+  TX
+};
+
 class IGpio
 {
 public:
@@ -75,6 +91,7 @@ public:
   virtual void            write(GPIO_PinState PinState) = 0;
   virtual void            toggle() = 0;
   virtual void            init(GPIO_Mode mode) = 0;
+  virtual void            configure_alternate_function(GPIO_Alt_Func af, GPIO_Alt_Func_Mode mode) = 0;
 };
 
 #endif //CAT_FEEDER_IGPIO_H

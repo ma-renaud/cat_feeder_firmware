@@ -6,9 +6,13 @@
 #include "IGpio.h"
 #include "f0Gpio.h"
 
+#include "IUart.h"
+#include "f0Uart.h"
+
 #include <memory>
 //#include <string>
 //#include "console.h"
+#include "circular_buffer.h"
 
 
 int main() {
@@ -20,13 +24,28 @@ int main() {
   /* Configure the system clock */
   __set_PRIMASK(1);
   SystemClock_Config();
+
   RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
   std::unique_ptr<IGpio> led2 = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_5);
   led2->init(GPIO_Mode::DIGITAL_OUT);
+
+  std::unique_ptr<IGpio> tx = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_2);
+  tx->init(GPIO_Mode::ALTERNATE_FUNCTION);
+  tx->configure_alternate_function(GPIO_Alt_Func::AF1, GPIO_Alt_Func_Mode::TX);
+
+  std::unique_ptr<IGpio> rx = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_3);
+  rx->init(GPIO_Mode::ALTERNATE_FUNCTION);
+  rx->configure_alternate_function(GPIO_Alt_Func::AF1, GPIO_Alt_Func_Mode::RX);
+
+  enable_uart2_clock();
+  std::unique_ptr<IUart> uart = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2));
+  uart->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600);
+  uart->enable_interrupts(0);
+
   __set_PRIMASK(0);
 
-  int test = SystemCoreClock;
-  led2->write(GPIO_PinState::RESET);
+  //int test = SystemCoreClock;
+  led2->write(GPIO_PinState::SET);
 
 //  Console cli(io, cli_buffer, cli_root_table, true, ">", "\r\n");
 
@@ -35,6 +54,7 @@ int main() {
     counter++;
     if (counter >= 2000000u) {
       led2->toggle();
+      uart->send_char('a');
       counter = 0;
     }
   }

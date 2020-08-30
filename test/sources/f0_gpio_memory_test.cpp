@@ -70,4 +70,13 @@ TEST_CASE("GpioMemory", "[gpio_memory]") {
     REQUIRE(gpioRegisters[2] == 0);
     REQUIRE(gpioRegisters[3] == 0);
   }
+
+  SECTION("Test init alternate functions") {
+    GPIO_Pin selectedPin = GPIO_Pin::PIN_2;
+    gpio->init(selectedPin, GPIO_Mode::ALTERNATE_FUNCTION);
+
+    REQUIRE(gpioRegisters[1] == 0);
+    REQUIRE(gpioRegisters[2] == 0);
+    REQUIRE(gpioRegisters[3] == 0);
+  }
 }
