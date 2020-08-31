@@ -4,10 +4,13 @@
 
 #include "rcc.h"
 #include "i_gpio.h"
-#include "f0Gpio.h"
+#include "f0_gpio.h"
 
 #include "i_uart.h"
 #include "f0_uart.h"
+
+#include "i_rcc.h"
+#include "f0_rcc.h"
 
 #include <memory>
 //#include <string>
@@ -23,29 +26,24 @@ int main() {
 
   /* Configure the system clock */
   __set_PRIMASK(1);
-  SystemClock_Config();
 
-  RCC->AHBENR |= RCC_AHBENR_GPIOAEN;
-  std::unique_ptr<IGpio> led2 = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_5);
-  led2->init(GPIO_Mode::DIGITAL_OUT);
+  std::unique_ptr<IRcc> rcc = std::make_unique<F0Rcc>(reinterpret_cast<uintptr_t>(RCC));
+  rcc->init(Rcc_PLL_Source::HSI, Rcc_PLL_Mul::MUL12);
 
-  std::unique_ptr<IGpio> tx = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_2);
-  tx->init(GPIO_Mode::ALTERNATE_FUNCTION);
-  tx->configure_alternate_function(GPIO_Alt_Func::AF1, GPIO_Alt_Func_Mode::TX);
+  std::unique_ptr<IGpio> led2 = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_5, rcc.get());
+  led2->init(Gpio_Mode::DIGITAL_OUT);
 
-  std::unique_ptr<IGpio> rx = std::make_unique<F0Gpio>(GPIO_Port::PORTA, GPIO_Pin::PIN_3);
-  rx->init(GPIO_Mode::ALTERNATE_FUNCTION);
-  rx->configure_alternate_function(GPIO_Alt_Func::AF1, GPIO_Alt_Func_Mode::RX);
-
-  enable_uart2_clock();
-  std::unique_ptr<IUart> uart = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2));
-  uart->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600);
-  uart->enable_interrupts(0);
+  std::unique_ptr<IGpio> uart2_tx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_2, rcc.get());
+  uart2_tx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::TX);
+  std::unique_ptr<IGpio> uart2_rx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_3, rcc.get());
+  uart2_rx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::RX);
+  std::unique_ptr<IUart> uart2 = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2), rcc.get());
+  uart2->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600, Uart_Mode::INTERRUPT);
 
   __set_PRIMASK(0);
 
   //int test = SystemCoreClock;
-  led2->write(GPIO_PinState::SET);
+  led2->write(Gpio_PinState::SET);
 
 //  Console cli(io, cli_buffer, cli_root_table, true, ">", "\r\n");
 
@@ -54,7 +52,7 @@ int main() {
     counter++;
     if (counter >= 2000000u) {
       led2->toggle();
-      uart->send_char('a');
+      uart2->send_char('a');
       counter = 0;
     }
   }

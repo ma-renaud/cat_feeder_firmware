@@ -13,7 +13,7 @@ public:
     BSRR = 0;
   }
 
-  void setPin(GPIO_Pin pin) {
+  void setPin(Gpio_Pin pin) {
     IDR = IDR | (static_cast<uint32_t>(pin) & 0xFFFF);
   }
 };
@@ -31,40 +31,40 @@ TEST_CASE("GpioMemory", "[gpio_memory]") {
   }
 
   SECTION("Test toogle") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_5;
     gpio->toggle(selectedPin);
 
     REQUIRE(gpio->odr() == static_cast<uint32_t>(selectedPin));
   }
 
   SECTION("Test write to one") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
-    gpio->write(selectedPin, GPIO_PinState::SET);
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_5;
+    gpio->write(selectedPin, Gpio_PinState::SET);
     gpio->updateRegisters();
 
     REQUIRE(gpio->odr() == static_cast<uint32_t>(selectedPin));
   }
 
   SECTION("Test write to zero") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
-    gpio->write(selectedPin, GPIO_PinState::SET);
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_5;
+    gpio->write(selectedPin, Gpio_PinState::SET);
     gpio->updateRegisters();
-    gpio->write(selectedPin, GPIO_PinState::RESET);
+    gpio->write(selectedPin, Gpio_PinState::RESET);
     gpio->updateRegisters();
 
     REQUIRE(gpio->odr() == 0);
   }
 
   SECTION("Test read") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_5;
     gpio->setPin(selectedPin);
 
     REQUIRE(gpio->idr() == static_cast<uint32_t>(selectedPin));
   }
 
   SECTION("Test init digital out") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_5;
-    gpio->init(selectedPin, GPIO_Mode::DIGITAL_OUT);
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_5;
+    gpio->init(selectedPin, Gpio_Mode::DIGITAL_OUT);
 
     REQUIRE(gpioRegisters[1] == 0);
     REQUIRE(gpioRegisters[2] == 0);
@@ -72,8 +72,8 @@ TEST_CASE("GpioMemory", "[gpio_memory]") {
   }
 
   SECTION("Test init alternate functions") {
-    GPIO_Pin selectedPin = GPIO_Pin::PIN_2;
-    gpio->init(selectedPin, GPIO_Mode::ALTERNATE_FUNCTION);
+    Gpio_Pin selectedPin = Gpio_Pin::PIN_2;
+    gpio->init(selectedPin, Gpio_Mode::ALTERNATE_FUNCTION);
 
     REQUIRE(gpioRegisters[1] == 0);
     REQUIRE(gpioRegisters[2] == 0);

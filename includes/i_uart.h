@@ -45,8 +45,8 @@ public:
   virtual void send_char(char data) = 0;
   virtual void send_string(std::string string) = 0;
   virtual void clear_debug_screen() = 0;
-  virtual void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate) = 0;
-  virtual void enable_interrupts(uint32_t priority) = 0;
+  virtual void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate, Uart_Mode mode) = 0;
+  virtual void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate, Uart_Mode mode, uint32_t priority) = 0;
 };
 
 #endif //I_UART_H

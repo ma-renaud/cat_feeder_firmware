@@ -14,7 +14,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_gpio_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_uart_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc_memory.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/rcc.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc.cpp
   )
 
 # Update the project lists

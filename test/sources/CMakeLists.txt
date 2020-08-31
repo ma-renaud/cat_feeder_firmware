@@ -8,6 +8,7 @@ set(localSources
 list(APPEND localSources
   ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_gpio_memory_test.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc_memory_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/simple_protocol_parser_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/simple_protocol_parser_logic_test.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/circular_buffer_test.cpp
