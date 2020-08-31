@@ -2,7 +2,6 @@
 #include "stm32f0xx.h"
 //#include "stm32f0xx_hal.h"
 
-#include "rcc.h"
 #include "i_gpio.h"
 #include "f0_gpio.h"
 
