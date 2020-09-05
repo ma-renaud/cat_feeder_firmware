@@ -51,6 +51,7 @@ public:
   virtual void init(Rcc_PLL_Source pll_src, Rcc_PLL_Mul pll_mul) = 0;
   virtual void enable_gpio_port(Rcc_Gpio port) = 0;
   virtual void enable_and_reset_uart(Rcc_Uart uart) = 0;
+  virtual uint32_t get_system_core_clock() = 0;
 };
 
 #endif //I_RCC_H

@@ -4,10 +4,10 @@
 #include <cstdint>
 #include <string>
 
-enum class Uart_Peripheral : uint8_t
+enum class Uart_Peripheral : uint32_t
 {
-  UART1 = 0,
-  UART2
+  UART1 = 0x40013800,
+  UART2 = 0x40004400
 };
 
 enum class Uart_Mode : uint8_t

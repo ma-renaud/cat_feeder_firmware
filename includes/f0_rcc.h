@@ -27,6 +27,10 @@ public:
     rcc_memory->enable_and_reset_uart(uart);
   }
 
+  uint32_t get_system_core_clock() override {
+    return SystemCoreClock;
+  }
+
 private:
   F0RccMemory *rcc_memory;
   static constexpr uint32_t Milliseconds = 1000;
