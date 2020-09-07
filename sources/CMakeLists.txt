@@ -15,6 +15,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_uart_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/vectors.cpp
   )
 
 # Update the project lists
