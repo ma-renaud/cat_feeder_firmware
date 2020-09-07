@@ -51,7 +51,7 @@ void F0UartMemory::send_string(const std::string& string) {
   }
 }
 
-void F0UartMemory::clear_debug_screen() {
+void F0UartMemory::clear_screen() {
   send_char(27);
   send_char('[');
   send_char('H');

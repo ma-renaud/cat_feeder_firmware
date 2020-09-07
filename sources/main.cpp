@@ -41,8 +41,8 @@ int main() {
 
   __set_PRIMASK(0);
 
-  //int test = SystemCoreClock;
   led2->write(Gpio_PinState::SET);
+  uart2->clear_screen();
 
 //  Console cli(io, cli_buffer, cli_root_table, true, ">", "\r\n");
 

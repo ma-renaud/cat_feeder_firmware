@@ -22,7 +22,7 @@ public:
 
   void send_char(char data) override { uart_memory->send_char(data); }
   void send_string(std::string string) override { uart_memory->send_string(string); }
-  void clear_debug_screen() override { uart_memory->clear_debug_screen(); }
+  void clear_screen() override { uart_memory->clear_screen(); }
   void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate, Uart_Mode mode) override {
     init(parity, stop_bit, baudrate, mode, 0);
   }

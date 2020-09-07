@@ -17,7 +17,7 @@ public:
 
   void send_char(char data);
   void send_string(const std::string& string);
-  void clear_debug_screen();
+  void clear_screen();
 
 protected:
   device_register CR1;
