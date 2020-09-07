@@ -5,6 +5,7 @@ set(localVar
 
 # Add specific source to the list
 list(APPEND localVar
+  ${CMAKE_CURRENT_SOURCE_DIR}/startup.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serial_parser.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serial_parser_states.cpp
@@ -15,7 +16,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_uart_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/vectors.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/isr_vectors.cpp
   )
 
 # Update the project lists

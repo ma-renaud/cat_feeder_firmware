@@ -5,7 +5,7 @@ set(localVar
 
 # Add specific source to the list
 list(APPEND localVar
-  ${CMAKE_CURRENT_SOURCE_DIR}/startup_stm32f030x8.s
+  #${CMAKE_CURRENT_SOURCE_DIR}/startup_stm32f030x8.s
   )
 
 # Update the project lists
