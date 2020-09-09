@@ -48,15 +48,15 @@
 
 /* start address for the initialization values of the .data section.
 defined in linker script */
-.word _sidata
+.word _rodata_begin
 /* start address for the .data section. defined in linker script */
-.word _sdata
+.word _data_begin
 /* end address for the .data section. defined in linker script */
-.word _edata
+.word _data_end
 /* start address for the .bss section. defined in linker script */
-.word _sbss
+.word _bss_begin
 /* end address for the .bss section. defined in linker script */
-.word _ebss
+.word _bss_end
 
   .section .text.Reset_Handler
   .weak Reset_Handler
@@ -66,9 +66,9 @@ Reset_Handler:
   mov   sp, r0          /* set stack pointer */
 
 /* Copy the data segment initializers from flash to SRAM */
-  ldr r0, =_sdata
-  ldr r1, =_edata
-  ldr r2, =_sidata
+  ldr r0, =_data_begin
+  ldr r1, =_data_end
+  ldr r2, =_rodata_begin
   movs r3, #0
   b LoopCopyDataInit
 
@@ -83,8 +83,8 @@ LoopCopyDataInit:
   bcc CopyDataInit
   
 /* Zero fill the bss segment. */
-  ldr r2, =_sbss
-  ldr r4, =_ebss
+  ldr r2, =_bss_begin
+  ldr r4, =_bss_end
   movs r3, #0
   b LoopFillZerobss
 

@@ -18,6 +18,7 @@ public:
   void send_char(char data);
   void send_string(const std::string& string);
   void clear_screen();
+  void IRQHandler();
 
 protected:
   device_register CR1;

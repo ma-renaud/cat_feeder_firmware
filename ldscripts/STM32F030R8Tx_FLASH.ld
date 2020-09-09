@@ -50,7 +50,7 @@
 */
 
 /* Entry Point */
-ENTRY(Reset_Handler)
+ENTRY(_start)
 
 /* Highest address of the user mode stack */
 _estack = 0x20002000;    /* end of RAM */
@@ -117,10 +117,12 @@ SECTIONS
   } >FLASH
   .init_array :
   {
-    PROVIDE_HIDDEN (__init_array_start = .);
+    _ctors_begin = .;
+    PROVIDE_HIDDEN (__init_array_start = _ctors_begin);
     KEEP (*(SORT(.init_array.*)))
     KEEP (*(.init_array*))
-    PROVIDE_HIDDEN (__init_array_end = .);
+    _ctors_end = .;
+    PROVIDE_HIDDEN (__init_array_end = _ctors_end);
   } >FLASH
   .fini_array :
   {
@@ -132,17 +134,18 @@ SECTIONS
 
   /* used by the startup to initialize data */
   _sidata = LOADADDR(.data);
+  _rodata_begin = LOADADDR(.data);
 
   /* Initialized data sections goes into RAM, load LMA copy after code */
   .data : 
   {
     . = ALIGN(4);
-    _sdata = .;        /* create a global symbol at data start */
+    _data_begin = .;        /* create a global symbol at data start */
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
 
     . = ALIGN(4);
-    _edata = .;        /* define a global symbol at data end */
+    _data_end = .;        /* define a global symbol at data end */
   } >RAM AT> FLASH
 
   
@@ -151,15 +154,15 @@ SECTIONS
   .bss :
   {
     /* This is used by the startup in order to initialize the .bss secion */
-    _sbss = .;         /* define a global symbol at bss start */
-    __bss_start__ = _sbss;
+    _bss_begin = .;         /* define a global symbol at bss start */
+    __bss_start__ = _bss_begin;
     *(.bss)
     *(.bss*)
     *(COMMON)
 
     . = ALIGN(4);
-    _ebss = .;         /* define a global symbol at bss end */
-    __bss_end__ = _ebss;
+    _bss_end = .;         /* define a global symbol at bss end */
+    __bss_end__ = _bss_end;
   } >RAM
 
   /* User_heap_stack section, used to check that there is enough RAM left */

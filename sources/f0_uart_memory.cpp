@@ -91,27 +91,21 @@ void F0UartMemory::enable_uart() {
 }
 
 /*Interruption USART2*/
-#ifdef __cplusplus
-extern "C" {
-#endif
-[[maybe_unused]] void USART2_IRQHandler(void) {
+void F0UartMemory::IRQHandler() {
   static uint8_t data;
-  if ((USART2->ISR & to_underlying(ISR::RXNE)) == to_underlying(ISR::RXNE)) {
-    buf_rx.push((uint8_t)USART2->RDR);
+  if ((ISR & to_underlying(ISR::RXNE)) == to_underlying(ISR::RXNE)) {
+    buf_rx.push((uint8_t)RDR);
   }
-  if ((USART2->ISR & to_underlying(ISR::TXE)) == to_underlying(ISR::TXE)) {
+  if ((ISR & to_underlying(ISR::TXE)) == to_underlying(ISR::TXE)) {
     if (buf_tx.size() > 0) {
       buf_tx.pop(data);
-      USART2->TDR = (uint16_t) (data);
+      TDR = (uint16_t) (data);
     } else {
-      USART2->CR1 &= ~(to_underlying(CR1::TXEIE)); // Desactivate interuption if nothing is sent
+      CR1 &= ~(to_underlying(CR1::TXEIE)); // Desactivate interuption if nothing is sent
     }
   }
 
-  if ((USART2->ISR & to_underlying(ISR::ORE)) == to_underlying(ISR::ORE)) {
-    USART2->ICR |= to_underlying(ICR::ORECF);
+  if ((ISR & to_underlying(ISR::ORE)) == to_underlying(ISR::ORE)) {
+    ICR |= to_underlying(ICR::ORECF);
   }
 }
-#ifdef __cplusplus
-}
-#endif

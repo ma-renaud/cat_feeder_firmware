@@ -2,14 +2,6 @@
 
 uint32_t systick = 0;
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void SysTick_Handler(void) {
+void SysTick_Handler() {
   systick++;
 }
-
-#ifdef __cplusplus
-}
-#endif

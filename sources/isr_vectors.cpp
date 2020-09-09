@@ -107,7 +107,8 @@ std::array<std::function<void()>,32 > isrHandlers = {
 };
 void ISR()
 {
-    isrHandlers[getVectNumber()]();
+    int irqn = getVectNumber();
+    isrHandlers[irqn]();
 }
 void registerHandler(IRQn_Type irqn, std::function<void()> &&f)
 {
