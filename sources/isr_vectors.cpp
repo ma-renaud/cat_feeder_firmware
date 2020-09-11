@@ -1,6 +1,9 @@
 
 #include <array>
 #include "isr_vectors.h"
+
+#define STM32_HANDLERS_OFFSET 16
+
 /**
  * While not a function, it is convenient to declare it as such, because now it can be put into the
  * reset vectors (array of functions).
@@ -14,7 +17,7 @@ void Reset_Handler();
 extern "C"
 {
 __attribute__((noreturn)) void Unassigned_Handler(void) {
-    for (;;) {
+  for (;;) {
     // If you get here, An interrupt is generated and the ISR vector is not set.
     // To get which ISR number is trigged, in gdb console type this: p getVectNumber()
     // This will tell the number of the ISR called. If the ISR number is 15, mostly the systick_handler is not defined.
@@ -22,13 +25,12 @@ __attribute__((noreturn)) void Unassigned_Handler(void) {
     // Add the STMicro::STMicroNow library and recompile the code.
     // If the ISR number is not 15, look at array void (*isr_vector[])(void) to get the ISR name. Use the number to find the index
     asm("BKPT #0");
-    }
+  }
 }
 }
 
-int getVectNumber()
-{
-    return SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk;
+int getVectNumber() {
+  return SCB->ICSR & SCB_ICSR_VECTACTIVE_Msk;
 }
 
 //#define ISR_LOW_MEMORY 1
@@ -70,7 +72,7 @@ void registerHandler(IRQn_Type irqn, std::function<void()> &&f)
     }
 }
 #else
-std::array<std::function<void()>,32 > isrHandlers = {
+std::array<std::function<void()>, 32> isrHandlers = {
     Unassigned_Handler, /*WWDG_IRQHandler*/
     Unassigned_Handler, /*PVD_IRQHandler*/
     Unassigned_Handler, /*RTC_IRQHandler*/
@@ -105,17 +107,15 @@ std::array<std::function<void()>,32 > isrHandlers = {
     Unassigned_Handler, /*0*/
 
 };
-void ISR()
-{
-    int irqn = getVectNumber();
-    isrHandlers[irqn]();
+
+void ISR() {
+  isrHandlers[getVectNumber() - STM32_HANDLERS_OFFSET]();
 }
-void registerHandler(IRQn_Type irqn, std::function<void()> &&f)
-{
-    isrHandlers[irqn] = f;
+
+void registerHandler(IRQn_Type irqn, std::function<void()> &&f) {
+  isrHandlers[irqn] = f;
 }
 #endif
-
 
 #define WEAK_FUNC(name) extern void name (void) __attribute__ ((weak, noreturn, nothrow, alias ("Unassigned_Handler")));
 WEAK_FUNC(NMI_Handler)
