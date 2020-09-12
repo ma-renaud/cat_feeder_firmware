@@ -1,5 +1,5 @@
 #include "catch2/catch.hpp"
-#include "f0_rcc_memory.h"
+#include "../../drivers/includes/f0_rcc_memory.h"
 
 class RCCExposed : public F0RccMemory{
 public:

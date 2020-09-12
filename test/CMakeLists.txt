@@ -25,8 +25,8 @@ list(APPEND TESTED_SOURCES
   ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/simple_protocol_parser.cpp
   ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serial_parser.cpp
   ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/serial_parser_states.cpp
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/f0_gpio_memory.cpp
-  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/sources/f0_rcc_memory.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/drivers/sources/f0_gpio_memory.cpp
+  ${TESTED_CMAKE_CURRENT_SOURCE_DIR}/drivers/sources/f0_rcc_memory.cpp
   )
 
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SOURCES} ${TESTED_SOURCES})

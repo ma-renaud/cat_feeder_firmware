@@ -12,12 +12,7 @@ public:
   }
   ~F0Rcc() = default;
 
-  void init(Rcc_PLL_Source pll_src, Rcc_PLL_Mul pll_mul) override {
-    rcc_memory->init(pll_src, pll_mul);
-
-    SystemCoreClockUpdate();
-    SysTick_Config(SystemCoreClock / Milliseconds);
-  }
+  void init(Rcc_PLL_Source pll_src, Rcc_PLL_Mul pll_mul) override;
 
   void enable_gpio_port(Rcc_Gpio port) override {
     rcc_memory->enable_gpio_port(port);
@@ -30,6 +25,9 @@ public:
   uint32_t get_system_core_clock() override {
     return SystemCoreClock;
   }
+
+  uint32_t get_systick() override;
+
 
 private:
   F0RccMemory *rcc_memory;

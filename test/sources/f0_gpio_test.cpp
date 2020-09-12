@@ -1,7 +1,7 @@
 #include <memory>
 #include "catch2/catch.hpp"
-#include "f0_gpio.h"
-#include "f0_gpio_memory.h"
+#include "../../drivers/includes/f0_gpio.h"
+#include "../../drivers/includes/f0_gpio_memory.h"
 
 TEST_CASE("Gpio", "[gpio]") {
   static constexpr unsigned int GPIOREGISTERSSIZE = 44;

@@ -1,5 +1,5 @@
-#include "f0_gpio_memory.h"
-#include "i_gpio.h"
+#include "../includes/f0_gpio_memory.h"
+#include "../includes/i_gpio.h"
 
 Gpio_PinState F0GpioMemory::readPin(Gpio_Pin pin) {
   if ((IDR & static_cast<uint8_t>(pin)) != static_cast<uint8_t>(Gpio_PinState::RESET)) {

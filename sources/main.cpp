@@ -2,14 +2,14 @@
 #include "stm32f0xx.h"
 //#include "stm32f0xx_hal.h"
 
-#include "i_gpio.h"
-#include "f0_gpio.h"
+#include "../drivers/includes/i_gpio.h"
+#include "../drivers/includes/f0_gpio.h"
 
-#include "i_uart.h"
-#include "f0_uart.h"
+#include "../drivers/includes/i_uart.h"
+#include "../drivers/includes/f0_uart.h"
 
-#include "i_rcc.h"
-#include "f0_rcc.h"
+#include "../drivers/includes/i_rcc.h"
+#include "../drivers/includes/f0_rcc.h"
 
 #include "isr_vectors.h"
 
@@ -61,18 +61,10 @@ int main() {
 
 } /*--------------------------------------------------------------------------*/
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void HardFault_Handler(void) {
+void HardFault_Handler() {
   while (1) {
   }
 }
-
-#ifdef __cplusplus
-}
-#endif
 
 
 //void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
