@@ -6,19 +6,20 @@
 #include "i_uart.h"
 #include "f0_memory.h"
 
-#include "circular_buffer.h"
-
 class F0UartMemory {
 public:
   F0UartMemory() = default;
   ~F0UartMemory() = default;
   void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate, uint32_t SystemCoreClock);
-  void enable_interrupts();
 
-  void send_char(char data);
-  void send_string(const std::string& string);
-  void clear_screen();
-  void IRQHandler();
+  void enable_interrupts();
+  void enable_tx_interrupt();
+  void disable_tx_interrupt();
+  bool is_tx_interrupt() const;
+  bool is_rx_interrupt() const;
+  void interrupt_send(uint8_t data);
+  uint8_t interrupt_get() const;
+  void manage_overrun();
 
 protected:
   device_register CR1;

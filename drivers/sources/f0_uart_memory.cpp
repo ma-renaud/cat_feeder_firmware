@@ -1,9 +1,6 @@
 #include "../includes/f0_uart_memory.h"
 #include "stm32f0xx.h"
 
-CircularBuffer<unsigned char, 32> buf_tx;
-CircularBuffer<unsigned char, 32> buf_rx;
-
 enum class CR1: uint32_t {
   UE      = 0x01U,
   RE      = 0x04U,
@@ -40,24 +37,27 @@ void F0UartMemory::enable_interrupts() {
   CR1 |= (to_underlying(CR1::TXEIE) | to_underlying(CR1::RXNEIE));
 }
 
-void F0UartMemory::send_char(char data) {
-  buf_tx.push(data);
-  CR1 |= to_underlying(CR1::TXEIE); // Interrupt transmit activation
+void F0UartMemory::enable_tx_interrupt() {
+  CR1 |= to_underlying(CR1::TXEIE);
+}
+void F0UartMemory::disable_tx_interrupt() {
+  CR1 &= ~(to_underlying(CR1::TXEIE));
 }
 
-void F0UartMemory::send_string(const std::string& string) {
-  for (auto & c : string) {
-    send_char(c);
-  }
+bool F0UartMemory::is_tx_interrupt() const {
+  return (ISR & to_underlying(ISR::TXE)) == to_underlying(ISR::TXE);
 }
 
-void F0UartMemory::clear_screen() {
-  send_char(27);
-  send_char('[');
-  send_char('H');
-  send_char(27);
-  send_char('[');
-  send_char('J');
+bool F0UartMemory::is_rx_interrupt() const {
+  return (ISR & to_underlying(ISR::RXNE)) == to_underlying(ISR::RXNE);
+}
+
+void F0UartMemory::interrupt_send(uint8_t data) {
+  TDR = (uint16_t) (data);
+}
+
+uint8_t F0UartMemory::interrupt_get() const {
+  return (uint8_t)RDR;
 }
 
 void F0UartMemory::set_parity(Uart_Parity parity) {
@@ -90,21 +90,7 @@ void F0UartMemory::enable_uart() {
   CR1 |= (to_underlying(CR1::UE) | to_underlying(CR1::RE) | to_underlying(CR1::TE));
 }
 
-/*Interruption USART2*/
-void F0UartMemory::IRQHandler() {
-  static uint8_t data;
-  if ((ISR & to_underlying(ISR::RXNE)) == to_underlying(ISR::RXNE)) {
-    buf_rx.push((uint8_t)RDR);
-  }
-  if ((ISR & to_underlying(ISR::TXE)) == to_underlying(ISR::TXE)) {
-    if (buf_tx.size() > 0) {
-      buf_tx.pop(data);
-      TDR = (uint16_t) (data);
-    } else {
-      CR1 &= ~(to_underlying(CR1::TXEIE)); // Desactivate interuption if nothing is sent
-    }
-  }
-
+void F0UartMemory::manage_overrun() {
   if ((ISR & to_underlying(ISR::ORE)) == to_underlying(ISR::ORE)) {
     ICR |= to_underlying(ICR::ORECF);
   }
