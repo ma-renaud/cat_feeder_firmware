@@ -15,9 +15,6 @@ if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   endif()
 endif()
 
-# Set the project name
-project(cat_feeder VERSION 0.0.1 LANGUAGES CXX C ASM)
-
 include(CPM)
 CPMAddPackage(
   NAME cmsis
@@ -36,6 +33,9 @@ CPMAddPackage(
   DOWNLOAD_ONLY True
   UPDATE_DISCONNECTED ON
 )
+
+# Set the project name
+project(cat_feeder VERSION 0.0.1 LANGUAGES CXX C ASM)
 
 #Set Version
 message(STATUS "Compiling Version: ${${PROJECT_NAME}_VERSION} of project ${PROJECT_NAME}")
@@ -76,7 +76,6 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   add_subdirectory(test)
 else()
   add_subdirectory(system)
-  add_subdirectory(system/includes/cmsis)
   add_subdirectory(drivers)
   add_subdirectory(includes)
   add_subdirectory(sources)

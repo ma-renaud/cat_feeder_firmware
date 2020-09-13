@@ -3,7 +3,6 @@
 ## History
 
 - [ ] PWM management
-- [ ] Encapsulate peripheral
 - [x] Uart communication
 - [ ] Feed schedule
 

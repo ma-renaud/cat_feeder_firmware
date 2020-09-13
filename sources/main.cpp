@@ -50,7 +50,7 @@ int main() {
   uint32_t counter_led = 0;
   for (ever) {
     counter_led++;
-    if (counter_led >= 2000000u) {
+    if (counter_led >= 5000u) {
       led2->toggle();
       counter_led = 0;
     }
