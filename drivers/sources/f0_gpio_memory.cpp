@@ -86,24 +86,13 @@ void F0GpioMemory::set_pull(uint8_t position, Gpio_Pupd pupd) {
 }
 
 uint8_t F0GpioMemory::get_pin_num(Gpio_Pin pin) {
-  switch (pin) {
-  case Gpio_Pin::PIN_0:return 0;
-  case Gpio_Pin::PIN_1:return 1;
-  case Gpio_Pin::PIN_2:return 2;
-  case Gpio_Pin::PIN_3:return 3;
-  case Gpio_Pin::PIN_4:return 4;
-  case Gpio_Pin::PIN_5:return 5;
-  case Gpio_Pin::PIN_6:return 6;
-  case Gpio_Pin::PIN_7:return 7;
-  case Gpio_Pin::PIN_8:return 8;
-  case Gpio_Pin::PIN_9:return 9;
-  case Gpio_Pin::PIN_10:return 10;
-  case Gpio_Pin::PIN_11:return 11;
-  case Gpio_Pin::PIN_12:return 12;
-  case Gpio_Pin::PIN_13:return 13;
-  case Gpio_Pin::PIN_14:return 14;
-  case Gpio_Pin::PIN_15:return 15;
-  case Gpio_Pin::PIN_All:break;
+  static const uint8_t NB_PINS = 16;
+  uint8_t position;
+  for (position = 0; position < NB_PINS; position++) {
+    uint32_t posTemp = static_cast<uint32_t>(0x01) << position;
+    if (posTemp == (static_cast<uint32_t>(pin) & posTemp))
+      break;
   }
-  return 255;
+
+  return position;
 }

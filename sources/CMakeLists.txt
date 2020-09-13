@@ -11,6 +11,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/serial_parser_states.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/simple_protocol_parser.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/isr_vectors.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/console_cmd_table.cpp
   )
 
 # Update the project lists

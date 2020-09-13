@@ -44,7 +44,7 @@ int main() {
 
   Data<64, 64> cli_data;
   Console cli(console_io, cli_data.get_buffer(), cli_data.get_root_table(), true, ">", "\r\n");
-  cli.add_cmd_table("Base table", base_table::get_base_table());
+  cli.add_cmd_table("Base table", app_cmd::get_app_table());
   cli.start("");
 
   uint32_t counter_led = 0;
