@@ -2,9 +2,9 @@
 
 ## History
 
-- [x] PWM management
+- [ ] PWM management
 - [ ] Encapsulate peripheral
-- [ ] Uart communication
+- [x] Uart communication
 - [ ] Feed schedule
 
 ## Cmake parameters

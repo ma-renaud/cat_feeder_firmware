@@ -10,6 +10,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_uart.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/console_cmd_table.cpp
   )
 
 # Update the project lists

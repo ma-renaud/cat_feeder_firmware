@@ -39,11 +39,11 @@ void F0GpioMemory::init(Gpio_Pin pin, Gpio_Mode mode) {
 void F0GpioMemory::set_alternate_function(Gpio_Pin pin, Gpio_Alt_Func af, Gpio_Alt_Func_Mode mode) {
   uint8_t position = get_pin_num(pin);
   if (pin < Gpio_Pin::PIN_8) {
-    AFR[0] &= ~(((uint32_t)0xFF) << (4 * position));
-    AFR[0] |= (((uint32_t) 0x01) << (4 * position));
+    AFR[0] &= ~(((uint32_t)0xFF) << (4u * position));
+    AFR[0] |= (((uint32_t) to_underlying(af)) << (4u * position));
   } else {
-    AFR[1] &= ~(((uint32_t)0xFF) << (4 * (position%8)));
-    AFR[1] |= (((uint32_t) 0x01) << (4 * (position%8)));
+    AFR[1] &= ~(((uint32_t)0xFF) << (4u * (position%8)));
+    AFR[1] |= (((uint32_t) to_underlying(af)) << (4u * (position%8)));
   }
 
   if (mode == Gpio_Alt_Func_Mode::RX) {
@@ -105,4 +105,5 @@ uint8_t F0GpioMemory::get_pin_num(Gpio_Pin pin) {
   case Gpio_Pin::PIN_15:return 15;
   case Gpio_Pin::PIN_All:break;
   }
+  return 255;
 }

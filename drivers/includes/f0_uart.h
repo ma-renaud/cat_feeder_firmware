@@ -21,11 +21,10 @@ public:
   void init(Uart_Parity parity, Uart_Stop_Bit stop_bit, Uart_Baudrate baudrate, Uart_Mode mode) override {
     init(parity, stop_bit, baudrate, mode, 0);
   }
-  void send_byte(uint8_t data) override;
-  void send_string(std::string string) override;
-  uint8_t get_byte() override;
+  bool send_byte(uint8_t data) override;
+  std::size_t send_string(std::string string) override;
+  bool get_byte(uint8_t &data) override;
   void clear_screen() override;
-
 
   void IRQHandler();
 

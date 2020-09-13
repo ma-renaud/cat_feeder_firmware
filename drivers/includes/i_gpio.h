@@ -68,7 +68,7 @@ enum class Gpio_Pupd : uint8_t {
   RESERVED
 };
 
-enum class Gpio_Alt_Func: uint8_t {
+enum class Gpio_Alt_Func: uint32_t {
   AF0 = 0,
   AF1,
   AF2,

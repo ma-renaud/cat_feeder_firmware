@@ -22,19 +22,32 @@ void F0Uart::init(Uart_Parity parity,
     enable_interrupts(priority);
 }
 
-void F0Uart::send_byte(uint8_t data) {
-  buf_tx.push(data);
+bool F0Uart::send_byte(uint8_t data) {
+  if (buf_tx.push(data) != 0) return false;
+
   uart_memory->enable_tx_interrupt();
+  return true;
 }
 
-void F0Uart::send_string(std::string string) {
+std::size_t F0Uart::send_string(std::string string) {
+  std::size_t sent = 0;
   for (auto & c : string) {
-    send_byte(c);
+    if (send_byte(c))
+      sent++;
+    else
+      break;
   }
+  return sent;
 }
 
-uint8_t F0Uart::get_byte() {
-  return EOF;
+
+bool F0Uart::get_byte(uint8_t &data) {
+  if (buf_rx.size() > 0) {
+    buf_rx.pop(data);
+    return true;
+  }
+
+  return false;
 }
 
 void F0Uart::clear_screen() {
