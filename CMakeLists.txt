@@ -20,6 +20,15 @@ project(cat_feeder VERSION 0.0.1 LANGUAGES CXX C ASM)
 
 include(CPM)
 CPMAddPackage(
+  NAME cmsis
+  GIT_REPOSITORY https://github.com/ma-renaud/cortex_cmsis.git
+  GIT_TAG master
+  SOURCE_DIR ${CMAKE_SOURCE_DIR}/system/includes/cmsis
+  DOWNLOAD_ONLY True
+  UPDATE_DISCONNECTED ON
+)
+
+CPMAddPackage(
   NAME console
   GIT_REPOSITORY https://gitlab.com/christian-dsa/console.git
   GIT_TAG develop
@@ -67,6 +76,7 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   add_subdirectory(test)
 else()
   add_subdirectory(system)
+  add_subdirectory(system/includes/cmsis)
   add_subdirectory(drivers)
   add_subdirectory(includes)
   add_subdirectory(sources)
