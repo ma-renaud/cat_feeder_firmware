@@ -12,6 +12,7 @@ public:
   void init(Rcc_PLL_Source pll_src, Rcc_PLL_Mul pll_mul);
   void enable_gpio_port(Rcc_Gpio port);
   void enable_and_reset_uart(Rcc_Uart uart);
+  void enable_timer(Rcc_Timer timer);
 
 protected:
   device_register CR;

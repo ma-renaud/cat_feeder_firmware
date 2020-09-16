@@ -6,6 +6,7 @@
 #include "i_uart.h"
 #include "f0_uart.h"
 #include "f0_rcc.h"
+#include "f0_basic_timer.h"
 #include "isr_vectors.h"
 
 #include <memory>
@@ -14,6 +15,8 @@
 #include "console_cmd_table.h"
 
 #define ever ;;
+
+std::unique_ptr<F0BasicTimer> timer6;
 
 int main() {
   /* Configure peripherals */
@@ -31,8 +34,10 @@ int main() {
   uart2_rx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::RX);
   std::unique_ptr<IUart> uart2 = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2), rcc.get());
   uart2->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600, Uart_Mode::INTERRUPT);
-
   registerHandler(USART2_IRQn, [u2 = uart2.get()]() { reinterpret_cast<F0Uart *>(u2)->IRQHandler(); });
+
+  timer6 = std::make_unique<F0BasicTimer>(reinterpret_cast<uintptr_t>(TIM6), rcc.get());
+  timer6->init(1000, 3700, 0);
 
   __set_PRIMASK(0);
   /* Configure peripherals end*/

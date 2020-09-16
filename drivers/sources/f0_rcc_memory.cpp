@@ -28,7 +28,11 @@ void F0RccMemory::enable_gpio_port(Rcc_Gpio port) {
 }
 
 void F0RccMemory::enable_and_reset_uart(Rcc_Uart uart) {
-  APB1ENR |= static_cast<uint32_t>(uart); // Clock activation for Uart2
-  APB1RSTR |= static_cast<uint32_t>(uart); // Set Uart2 in reset state
-  APB1RSTR &= ~(static_cast<uint32_t>(uart)); // Remove uart2 state from reset
+  APB1ENR |= static_cast<uint32_t>(uart); // Clock activation for Uart
+  APB1RSTR |= static_cast<uint32_t>(uart); // Set Uart in reset state
+  APB1RSTR &= ~(static_cast<uint32_t>(uart)); // Remove uart state from reset
+}
+
+void F0RccMemory::enable_timer(Rcc_Timer timer) {
+  APB1ENR |= to_underlying(timer);
 }

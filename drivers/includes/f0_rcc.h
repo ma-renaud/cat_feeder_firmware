@@ -22,6 +22,10 @@ public:
     rcc_memory->enable_and_reset_uart(uart);
   }
 
+  void enable_timer(Rcc_Timer timer) override {
+    rcc_memory->enable_timer(timer);
+  }
+
   uint32_t get_system_core_clock() override {
     return SystemCoreClock;
   }

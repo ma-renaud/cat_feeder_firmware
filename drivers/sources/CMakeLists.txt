@@ -11,6 +11,7 @@ list(APPEND localVar
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_basic_timer_memory.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_rcc.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/f0_uart.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/f0_basic_timer.cpp
   )
 
 # Update the project lists
