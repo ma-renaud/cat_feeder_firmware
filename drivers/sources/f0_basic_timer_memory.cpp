@@ -10,3 +10,7 @@ void F0BasicTimerMemory::init(uint16_t period, uint16_t prescaler) {
 void F0BasicTimerMemory::enable_interrupts() {
   DIER = to_underlying(DIER::UIE);
 }
+
+void F0BasicTimerMemory::clear_interrupt_flag() {
+  SR = ~(to_underlying(SR::UIF));
+}

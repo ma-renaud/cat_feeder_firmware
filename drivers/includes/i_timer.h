@@ -16,6 +16,7 @@ enum class Timer_IRQn : uint8_t {
 class ITimer {
 public:
   virtual void init(uint16_t period, uint16_t prescaler, uint32_t priority) = 0;
+  virtual void register_callback(std::function<void()> &&f) = 0;
 };
 
 #endif //I_TIMER_H

@@ -19,7 +19,7 @@
 std::unique_ptr<IGpio> led2;
 std::unique_ptr<F0BasicTimer> timer6;
 
-void IRQHandler_Tim6();
+void tim6_callback();
 
 int main() {
   /* Configure peripherals */
@@ -40,8 +40,9 @@ int main() {
   registerHandler(USART2_IRQn, [u2 = uart2.get()]() { reinterpret_cast<F0Uart *>(u2)->IRQHandler(); });
 
   timer6 = std::make_unique<F0BasicTimer>(reinterpret_cast<uintptr_t>(TIM6), rcc.get());
-  timer6->init(62500, 1342, 0);
-  registerHandler(TIM6_IRQn, []() { IRQHandler_Tim6(); });
+  timer6->init(12973, 3700, 0);
+  timer6->register_callback([]() { tim6_callback(); });
+  registerHandler(TIM6_IRQn, [tim6 = timer6.get()]() { reinterpret_cast<F0BasicTimer *>(tim6)->IRQHandler(); });
 
   __set_PRIMASK(0);
   /* Configure peripherals end*/
@@ -56,37 +57,22 @@ int main() {
   cli.add_cmd_table("Base table", app_cmd::get_app_table());
   cli.start("");
 
-  uint32_t counter_led = 0;
   for (ever) {
-    counter_led++;
-    if (counter_led >= 5000u) {
-//      led2->toggle();
-      counter_led = 0;
-    }
     cli.process();
   }
 
 } /*--------------------------------------------------------------------------*/
 
-void IRQHandler_Tim6(){
+void tim6_callback(){
   led2->toggle();
 }
 
-
 void HardFault_Handler() {
   for (ever) {
+    asm("BKPT #0");
   }
 }
 
-//void MX_TIM6_Init() {
-//  htim6.Instance = TIM6;
-//  htim6.Init.Prescaler = 3699;
-//  htim6.Init.CounterMode = TIM_COUNTERMODE_UP;
-//  htim6.Init.Period = 999;
-//  htim6.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-//  HAL_TIM_Base_Init(&htim6);
-//} /*--------------------------------------------------------------------------*/
-//
 //void MX_TIM14_Init() {
 //  htim14.Instance = TIM14;
 //  htim14.Init.Prescaler = 23999;

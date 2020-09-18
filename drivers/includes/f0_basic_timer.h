@@ -18,10 +18,17 @@ public:
     enable_interrupts(priority);
   }
 
+  void register_callback(std::function<void()> &&f) {
+    callback = f;
+  }
+
+  void IRQHandler();
+
 private:
   F0BasicTimerMemory *timer_memory;
-  Rcc_Timer get_timer_rcc();
+  std::function<void()> callback {nullptr};
 
+  Rcc_Timer get_timer_rcc();
   void enable_interrupts(uint32_t priority);
 };
 

@@ -20,4 +20,8 @@ enum class DIER: uint16_t {
   UDE     = 0x100U
 };
 
+enum class SR: uint16_t {
+  UIF     = 0x01U
+};
+
 #endif // F0_TIMER_MEMORY_H

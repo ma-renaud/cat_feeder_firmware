@@ -11,6 +11,8 @@ public:
   void init(uint16_t period, uint16_t prescaler);
   void enable_interrupts();
 
+  void clear_interrupt_flag();
+
 protected:
   device_register CR1;
   device_register RESERVED;

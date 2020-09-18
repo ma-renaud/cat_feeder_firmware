@@ -31,3 +31,9 @@ void F0BasicTimer::enable_interrupts(uint32_t priority) {
     NVIC_SetPriority(irqn, priority);
   }
 }
+
+void F0BasicTimer::IRQHandler() {
+  timer_memory->clear_interrupt_flag();
+  if (callback)
+    callback();
+}
