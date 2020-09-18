@@ -11,7 +11,7 @@ class SimpleProtocolParserStub : public SimpleProtocolParser
       std::string trace;
 
       void receptionStart() override { trace += "S"; }
-      void receiveData(char received) override { trace += "D"; }
+      void receiveData([[maybe_unused]] char received) override { trace += "D"; }
       void appendReceivedData() override { trace += "A"; }
       void receptionCompleted() override { trace += "E"; }
 };
