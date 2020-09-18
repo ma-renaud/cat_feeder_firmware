@@ -16,34 +16,20 @@
 
 #define ever ;;
 
+std::unique_ptr<IRcc> rcc;
 std::unique_ptr<IGpio> led2;
+std::unique_ptr<IGpio> uart2_tx;
+std::unique_ptr<IGpio> uart2_rx;
+std::unique_ptr<IUart> uart2;
 std::unique_ptr<F0BasicTimer> timer6;
 
+void init_periph();
 void tim6_callback();
 
 int main() {
   /* Configure peripherals */
   __set_PRIMASK(1);
-
-  std::unique_ptr<IRcc> rcc = std::make_unique<F0Rcc>(reinterpret_cast<uintptr_t>(RCC));
-  rcc->init(Rcc_PLL_Source::HSI, Rcc_PLL_Mul::MUL12);
-
-  led2 = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_5, rcc.get());
-  led2->init(Gpio_Mode::DIGITAL_OUT);
-
-  std::unique_ptr<IGpio> uart2_tx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_2, rcc.get());
-  uart2_tx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::TX);
-  std::unique_ptr<IGpio> uart2_rx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_3, rcc.get());
-  uart2_rx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::RX);
-  std::unique_ptr<IUart> uart2 = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2), rcc.get());
-  uart2->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600, Uart_Mode::INTERRUPT);
-  registerHandler(USART2_IRQn, [u2 = uart2.get()]() { reinterpret_cast<F0Uart *>(u2)->IRQHandler(); });
-
-  timer6 = std::make_unique<F0BasicTimer>(reinterpret_cast<uintptr_t>(TIM6), rcc.get());
-  timer6->init(12973, 3700, 0);
-  timer6->register_callback([]() { tim6_callback(); });
-  registerHandler(TIM6_IRQn, [tim6 = timer6.get()]() { reinterpret_cast<F0BasicTimer *>(tim6)->IRQHandler(); });
-
+  init_periph();
   __set_PRIMASK(0);
   /* Configure peripherals end*/
 
@@ -71,6 +57,27 @@ void HardFault_Handler() {
   for (ever) {
     asm("BKPT #0");
   }
+}
+
+void init_periph() {
+  rcc = std::make_unique<F0Rcc>(reinterpret_cast<uintptr_t>(RCC));
+  rcc->init(Rcc_PLL_Source::HSI, Rcc_PLL_Mul::MUL12);
+
+  led2 = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_5, rcc.get());
+  led2->init(Gpio_Mode::DIGITAL_OUT);
+
+  uart2_tx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_2, rcc.get());
+  uart2_tx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::TX);
+  uart2_rx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_3, rcc.get());
+  uart2_rx->init(Gpio_Mode::ALTERNATE_FUNCTION, Gpio_Alt_Func::AF1, Gpio_Alt_Func_Mode::RX);
+  uart2 = std::make_unique<F0Uart>(reinterpret_cast<uintptr_t>(USART2), rcc.get());
+  uart2->init(Uart_Parity::NONE, Uart_Stop_Bit::ONE_BIT, Uart_Baudrate::BAUD_9600, Uart_Mode::INTERRUPT);
+  registerHandler(USART2_IRQn, [u2 = uart2.get()]() { reinterpret_cast<F0Uart *>(u2)->IRQHandler(); });
+
+  timer6 = std::make_unique<F0BasicTimer>(reinterpret_cast<uintptr_t>(TIM6), rcc.get());
+  timer6->init(12973, 3700, 0);
+  timer6->register_callback([]() { tim6_callback(); });
+  registerHandler(TIM6_IRQn, [tim6 = timer6.get()]() { reinterpret_cast<F0BasicTimer *>(tim6)->IRQHandler(); });
 }
 
 //void MX_TIM14_Init() {
