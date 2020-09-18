@@ -1,7 +1,6 @@
 /build/
 /.idea/*
 /test/.idea/*
-/console/
 /system/includes/cmsis/
 
 .metadata

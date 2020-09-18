@@ -25,15 +25,6 @@ CPMAddPackage(
   UPDATE_DISCONNECTED ON
 )
 
-CPMAddPackage(
-  NAME console
-  GIT_REPOSITORY https://gitlab.com/christian-dsa/console.git
-  GIT_TAG develop
-  SOURCE_DIR ${CMAKE_SOURCE_DIR}/console
-  DOWNLOAD_ONLY True
-  UPDATE_DISCONNECTED ON
-)
-
 # Set the project name
 project(cat_feeder VERSION 0.0.1 LANGUAGES CXX C ASM)
 
