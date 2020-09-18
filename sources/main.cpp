@@ -16,7 +16,10 @@
 
 #define ever ;;
 
+std::unique_ptr<IGpio> led2;
 std::unique_ptr<F0BasicTimer> timer6;
+
+void IRQHandler_Tim6();
 
 int main() {
   /* Configure peripherals */
@@ -25,7 +28,7 @@ int main() {
   std::unique_ptr<IRcc> rcc = std::make_unique<F0Rcc>(reinterpret_cast<uintptr_t>(RCC));
   rcc->init(Rcc_PLL_Source::HSI, Rcc_PLL_Mul::MUL12);
 
-  std::unique_ptr<IGpio> led2 = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_5, rcc.get());
+  led2 = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_5, rcc.get());
   led2->init(Gpio_Mode::DIGITAL_OUT);
 
   std::unique_ptr<IGpio> uart2_tx = std::make_unique<F0Gpio>(Gpio_Port::PORTA, Gpio_Pin::PIN_2, rcc.get());
@@ -37,7 +40,8 @@ int main() {
   registerHandler(USART2_IRQn, [u2 = uart2.get()]() { reinterpret_cast<F0Uart *>(u2)->IRQHandler(); });
 
   timer6 = std::make_unique<F0BasicTimer>(reinterpret_cast<uintptr_t>(TIM6), rcc.get());
-  timer6->init(1000, 3700, 0);
+  timer6->init(62500, 1342, 0);
+  registerHandler(TIM6_IRQn, []() { IRQHandler_Tim6(); });
 
   __set_PRIMASK(0);
   /* Configure peripherals end*/
@@ -56,13 +60,18 @@ int main() {
   for (ever) {
     counter_led++;
     if (counter_led >= 5000u) {
-      led2->toggle();
+//      led2->toggle();
       counter_led = 0;
     }
     cli.process();
   }
 
 } /*--------------------------------------------------------------------------*/
+
+void IRQHandler_Tim6(){
+  led2->toggle();
+}
+
 
 void HardFault_Handler() {
   for (ever) {
