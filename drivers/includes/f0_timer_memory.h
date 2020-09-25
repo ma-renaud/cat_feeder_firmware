@@ -2,6 +2,7 @@
 #define F0_TIMER_MEMORY_H
 
 #include <cstdint>
+#include "f0_memory.h"
 
 enum class CR1: uint16_t {
   CEN     = 0x01U,

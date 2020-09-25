@@ -3,7 +3,7 @@
 
 #include <functional>
 #include <cstdint>
-#include "f0_basic_timer_memory.h"
+#include "f0_timer_memory.h"
 #include "i_timer.h"
 #include "i_rcc.h"
 #include "stm32f0xx.h"
@@ -25,7 +25,7 @@ public:
   void IRQHandler();
 
 private:
-  F0BasicTimerMemory *timer_memory;
+  F0TimerMemory *timer_memory;
   std::function<void()> callback {nullptr};
 
   Rcc_Timer get_timer_rcc();
