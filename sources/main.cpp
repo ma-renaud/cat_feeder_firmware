@@ -10,9 +10,6 @@
 #include "isr_vectors.h"
 
 #include <memory>
-#include "console.h"
-#include "console_io_uart.h"
-#include "console_cmd_table.h"
 
 #define ever ;;
 
@@ -36,21 +33,14 @@ int main() {
   led2->write(Gpio_PinState::SET);
   uart2->clear_screen();
 
-  ConsoleIoUart console_io(uart2.get());
-
-  Data<64, 64> cli_data;
-  Console cli(console_io, cli_data.get_buffer(), cli_data.get_root_table(), true, ">", "\r\n");
-  cli.add_cmd_table("Base table", app_cmd::get_app_table());
-  cli.start("");
-
   for (ever) {
-    cli.process();
   }
 
 } /*--------------------------------------------------------------------------*/
 
 void tim6_callback(){
   led2->toggle();
+  //relay->toggle();
 }
 
 void HardFault_Handler() {

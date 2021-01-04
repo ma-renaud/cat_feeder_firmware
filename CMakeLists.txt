@@ -9,7 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "export the build rules into a J
 #enable the toolcahin file if not in unit test mode
 if (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "UTest")
   #Use a specific compiler version here
-  set(COMPILER_VERSION_REQUIRED "9.2.1" CACHE STRING "Use the fixed compiler version" FORCE)
+  set(COMPILER_VERSION_REQUIRED "8.2.1" CACHE STRING "Use the fixed compiler version" FORCE)
   if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/cmake/arm-none-eabi-gcc.cmake" CACHE UNINITIALIZED "toolchain file")
   endif()
@@ -70,7 +70,6 @@ else()
   add_subdirectory(drivers)
   add_subdirectory(includes)
   add_subdirectory(sources)
-  include(console)
 
   add_executable(${PROJECT_NAME}
     ${${PROJECT_NAME}_SOURCES}
